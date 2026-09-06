@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Achmad Mirza Arzheta Rahman — Profil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #161B22;
+    --ink-soft: #1F2630;
+    --paper: #EDEAE0;
+    --paper-dim: #C9C4B4;
+    --amber: #E8A33D;
+    --teal: #4FA5A0;
+    --rule: rgba(237,234,224,0.16);
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--sans);
+    line-height: 1.55;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation: none !important; transition:none !important; }
+  }
+
+  .wrap{
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  .hero{
+    padding: 88px 0 64px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 168px 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .photo-slot{
+    width: 168px;
+    height: 168px;
+    border-radius: 10px;
+    border: 1.5px dashed var(--paper-dim);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction: column;
+    gap: 6px;
+    color: var(--paper-dim);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    background: linear-gradient(155deg, rgba(232,163,61,0.06), rgba(79,165,160,0.05));
+  }
+  .photo-slot svg{ width:40px; height:40px; opacity:0.55; }
+  .kicker{
+    font-family: var(--mono);
+    color: var(--teal);
+    font-size: 14px;
+    margin: 0 0 10px;
+  }
+  h1{
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(36px, 5vw, 52px);
+    line-height: 1.08;
+    margin: 0 0 14px;
+    color: var(--paper);
+  }
+  .hero p.tag{
+    max-width: 46ch;
+    color: #C9C4B4;
+    font-size: 17px;
+    margin: 0;
+  }
+
+  section.block{
+    padding: 56px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  section.block:last-of-type{ border-bottom: none; }
+  h2{
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--amber);
+    margin: 0 0 32px;
+  }
+
+  .field-list{
+    display:grid;
+    grid-template-columns: 170px 1fr;
+    row-gap: 18px;
+    column-gap: 24px;
+  }
+  .field-list dt{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--paper-dim);
+    padding-top: 2px;
+  }
+  .field-list dd{
+    margin:0;
+    font-size: 17px;
+    color: var(--paper);
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .field-list dt{
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .trait-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .trait-card{
+    padding: 24px 26px;
+    border-left: 3px solid var(--amber);
+    background: var(--ink-soft);
+    border-radius: 0 8px 8px 0;
+  }
+  .trait-card.weak{ border-left-color: var(--teal); }
+  .trait-card h3{
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0 10px;
+    color: var(--paper);
+  }
+  .trait-card p{
+    margin: 0;
+    color: #C9C4B4;
+    font-size: 15.5px;
+  }
+  @media (max-width: 640px){
+    .trait-grid{ grid-template-columns: 1fr; }
+    .hero-grid{ grid-template-columns: 1fr; }
+    .photo-slot{ width: 120px; height: 120px; }
+    .field-list{ grid-template-columns: 130px 1fr; }
+  }
+
+  .idea{
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .idea:last-child{ border-bottom:none; padding-bottom: 0; }
+  .idea-head{
+    display:flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .idea h3{
+    font-size: 21px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--paper);
+  }
+  .idea .stack{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--teal);
+  }
+  .idea p{
+    margin: 0;
+    color: #C9C4B4;
+    font-size: 15.5px;
+    max-width: 68ch;
+  }
+  .idea .why{
+    margin-top: 4px;
+    font-size: 14px;
+    color: var(--paper-dim);
+    font-style: italic;
+  }
+
+  footer{
+    padding: 40px 0 60px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--paper-dim);
+  }
+
+  a{ color: var(--amber); }
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-grid">
+      <div class="photo-slot">
+        <img src="foto-profil.png" alt="Foto profil Achmad Mirza Arzheta Rahman" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div>
+        <p class="kicker">Profil Mahasiswa</p>
+        <h1>Achmad Mirza Arzheta Rahman</h1>
+      </div>
+    </div>
+  </header>
+
+  <section class="block" id="data-diri">
+    <h2>Data diri</h2>
+    <dl class="field-list">
+      <dt>Asal daerah</dt>
+      <dd>Kabupaten Pasuruan, Jawa Timur</dd>
+      <dt>Asal sekolah</dt>
+      <dd>SMAN 1 Kejayan</dd>
+      <dt>Email</dt>
+      <dd><a href="mailto:aerzetha@gmail.com">aerzetha@gmail.com</a></dd>
+    </dl>
+  </section>
+
+  <section class="block" id="kelebihan-kekurangan">
+    <h2>Kelebihan &amp; kekurangan</h2>
+    <div class="trait-grid">
+      <div class="trait-card">
+        <h3>Kelebihan</h3>
+        <p>Teliti dan sabar, betah menelusuri detail sampai tuntas.</p>
+      </div>
+      <div class="trait-card weak">
+        <h3>Kekurangan</h3>
+        <p>Cenderung menghabiskan waktu terlalu lama untuk memastikan sesuatu benar-benar detail, sehingga progres bisa melambat.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="ide-project">
+    <h2>Ide project — Pemrograman Perangkat Bergerak</h2>
+
+    <div class="idea">
+      <div class="idea-head">
+        <h3>SecuScan</h3>
+        <span class="stack">Kotlin / Flutter · Android permission API</span>
+      </div>
+      <p>Aplikasi pemeriksa kebiasaan keamanan digital: mengecek izin aplikasi yang terpasang, kekuatan pola/PIN, dan memberi rekomendasi perbaikan sederhana dalam bahasa awam.</p>
+    </div>
+
+  <footer>
+    dibuat untuk keperluan tugas | terakhir diperbarui 2026
+  </footer>
+
+</div>
+
+</body>
+</html>
