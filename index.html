@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Achmad Mirza Arzheta Rahman — Profil</title>
+<title>Erzeth — Profil</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -39,32 +39,28 @@
   }
 
   .hero{
-    padding: 88px 0 64px;
-    border-bottom: 1px solid var(--rule);
+    padding: 72px 0 32px;
   }
   .hero-grid{
     display:grid;
-    grid-template-columns: 168px 1fr;
-    gap: 40px;
+    grid-template-columns: 140px 1fr;
+    gap: 32px;
     align-items: center;
   }
   .photo-slot{
-    width: 168px;
-    height: 168px;
+    width: 140px;
+    height: 140px;
     border-radius: 10px;
-    border: 1.5px dashed var(--paper-dim);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction: column;
-    gap: 6px;
-    color: var(--paper-dim);
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.02em;
+    overflow: hidden;
+    border: 1px solid var(--rule);
     background: linear-gradient(155deg, rgba(232,163,61,0.06), rgba(79,165,160,0.05));
   }
-  .photo-slot svg{ width:40px; height:40px; opacity:0.55; }
+  .photo-slot img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
   .kicker{
     font-family: var(--mono);
     color: var(--teal);
@@ -74,35 +70,80 @@
   h1{
     font-family: var(--sans);
     font-weight: 700;
-    font-size: clamp(36px, 5vw, 52px);
-    line-height: 1.08;
-    margin: 0 0 14px;
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.15;
+    margin: 0;
     color: var(--paper);
   }
-  .hero p.tag{
-    max-width: 46ch;
-    color: #C9C4B4;
-    font-size: 17px;
-    margin: 0;
+
+  /* ---------- Tabs nav ---------- */
+  .tabs-bar{
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(22,27,34,0.94);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .tabs-inner{
+    display: flex;
+    gap: 6px;
+    padding: 10px 0;
+  }
+  .tabs-inner a{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--paper-dim);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: color .15s, background .15s;
+    line-height: 1.4;
+  }
+  .tabs-inner a:hover{ color: var(--paper); background: var(--ink-soft); }
+  .tabs-inner a.active{
+    color: var(--ink);
+    background: var(--amber);
+    font-weight: 600;
+  }
+
+  .task-divider{
+    padding: 56px 0 20px;
+    scroll-margin-top: 64px;
+  }
+  .task-divider .task-num{
+    font-family: var(--mono);
+    color: var(--teal);
+    font-size: 14px;
+    letter-spacing: 0.04em;
+  }
+  .task-divider h2.task-h{
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 28px;
+    margin: 8px 0 0;
+    color: var(--paper);
   }
 
   section.block{
-    padding: 56px 0;
+    padding: 44px 0;
     border-bottom: 1px solid var(--rule);
+    scroll-margin-top: 64px;
   }
-  section.block:last-of-type{ border-bottom: none; }
+  #tugas-2 section.block:last-of-type{ border-bottom: none; }
   h2{
     font-family: var(--mono);
     font-weight: 500;
     font-size: 20px;
     color: var(--amber);
-    margin: 0 0 32px;
+    margin: 0 0 28px;
   }
 
   .field-list{
     display:grid;
-    grid-template-columns: 170px 1fr;
-    row-gap: 18px;
+    grid-template-columns: 150px 1fr;
+    row-gap: 16px;
     column-gap: 24px;
   }
   .field-list dt{
@@ -110,26 +151,24 @@
     font-size: 13px;
     color: var(--paper-dim);
     padding-top: 2px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--rule);
   }
   .field-list dd{
     margin:0;
-    font-size: 17px;
+    font-size: 16px;
     color: var(--paper);
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--rule);
-  }
-  .field-list dt{
-    padding-bottom: 16px;
+    padding-bottom: 14px;
     border-bottom: 1px solid var(--rule);
   }
 
   .trait-grid{
     display:grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    gap: 20px;
   }
   .trait-card{
-    padding: 24px 26px;
+    padding: 20px 22px;
     border-left: 3px solid var(--amber);
     background: var(--ink-soft);
     border-radius: 0 8px 8px 0;
@@ -137,31 +176,27 @@
   .trait-card.weak{ border-left-color: var(--teal); }
   .trait-card h3{
     font-family: var(--mono);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
-    margin: 0 0 10px;
+    margin: 0 0 8px;
     color: var(--paper);
   }
   .trait-card p{
     margin: 0;
     color: #C9C4B4;
-    font-size: 15.5px;
+    font-size: 15px;
   }
   @media (max-width: 640px){
     .trait-grid{ grid-template-columns: 1fr; }
     .hero-grid{ grid-template-columns: 1fr; }
-    .photo-slot{ width: 120px; height: 120px; }
-    .field-list{ grid-template-columns: 130px 1fr; }
+    .photo-slot{ width: 108px; height: 108px; }
+    .field-list{ grid-template-columns: 120px 1fr; }
+    .tabs-inner{ gap: 4px; }
   }
 
   .idea{
-    padding: 28px 0;
-    border-bottom: 1px solid var(--rule);
-    display:grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
+    padding: 20px 0;
   }
-  .idea:last-child{ border-bottom:none; padding-bottom: 0; }
   .idea-head{
     display:flex;
     align-items: baseline;
@@ -169,33 +204,73 @@
     flex-wrap: wrap;
   }
   .idea h3{
-    font-size: 21px;
+    font-size: 19px;
     font-weight: 700;
     margin: 0;
     color: var(--paper);
   }
   .idea .stack{
     font-family: var(--mono);
-    font-size: 12.5px;
+    font-size: 12px;
     color: var(--teal);
   }
   .idea p{
-    margin: 0;
+    margin: 8px 0 0;
     color: #C9C4B4;
-    font-size: 15.5px;
+    font-size: 15px;
     max-width: 68ch;
   }
-  .idea .why{
-    margin-top: 4px;
-    font-size: 14px;
+
+  .code-block{
+    margin: 0;
+    padding: 20px 22px;
+    background: var(--ink-soft);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--paper);
+  }
+  .code-block .tok-kw{ color: var(--teal); }
+  .code-block .tok-an{ color: var(--amber); }
+  .code-block .tok-str{ color: #D9C89A; }
+
+  .preview-frame{
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--ink-soft);
+    max-width: 480px;
+  }
+  .preview-frame img{
+    width: 100%;
+    display: block;
+  }
+  .preview-caption{
+    margin: 10px 0 0;
+    font-family: var(--mono);
+    font-size: 12px;
     color: var(--paper-dim);
-    font-style: italic;
+  }
+
+  .summary-text{
+    margin: 0;
+    color: #C9C4B4;
+    font-size: 15px;
+    max-width: 68ch;
+  }
+  .summary-text code{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--teal);
   }
 
   footer{
-    padding: 40px 0 60px;
+    padding: 36px 0 56px;
     font-family: var(--mono);
-    font-size: 12.5px;
+    font-size: 12px;
     color: var(--paper-dim);
   }
 
@@ -209,11 +284,10 @@
 <body>
 
 <div class="wrap">
-
   <header class="hero">
     <div class="hero-grid">
       <div class="photo-slot">
-        <img src="foto-profil.png" alt="Foto profil Achmad Mirza Arzheta Rahman" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
+        <img src="foto-profil.png" alt="Foto profil Achmad Mirza Arzheta Rahman">
       </div>
       <div>
         <p class="kicker">Profil Mahasiswa</p>
@@ -221,49 +295,151 @@
       </div>
     </div>
   </header>
+</div>
 
-  <section class="block" id="data-diri">
-    <h2>Data diri</h2>
-    <dl class="field-list">
-      <dt>Asal daerah</dt>
-      <dd>Kabupaten Pasuruan, Jawa Timur</dd>
-      <dt>Asal sekolah</dt>
-      <dd>SMAN 1 Kejayan</dd>
-      <dt>Email</dt>
-      <dd><a href="mailto:aerzetha@gmail.com">aerzetha@gmail.com</a></dd>
-    </dl>
-  </section>
+<div class="tabs-bar">
+  <div class="wrap tabs-inner">
+    <a href="#tugas-1" data-tab="tugas-1">Tugas 1</a>
+    <a href="#tugas-2" data-tab="tugas-2">Tugas 2</a>
+  </div>
+</div>
 
-  <section class="block" id="kelebihan-kekurangan">
-    <h2>Kelebihan &amp; kekurangan</h2>
-    <div class="trait-grid">
-      <div class="trait-card">
-        <h3>Kelebihan</h3>
-        <p>Teliti dan sabar, betah menelusuri detail sampai tuntas.</p>
-      </div>
-      <div class="trait-card weak">
-        <h3>Kekurangan</h3>
-        <p>Cenderung menghabiskan waktu terlalu lama untuk memastikan sesuatu benar-benar detail, sehingga progres bisa melambat.</p>
-      </div>
+<div class="wrap">
+
+  <div id="tugas-1">
+    <div class="task-divider">
+      <span class="task-num">Tugas 1</span>
+      <h2 class="task-h">Profil &amp; Ide Project</h2>
     </div>
-  </section>
 
-  <section class="block" id="ide-project">
-    <h2>Ide project — Pemrograman Perangkat Bergerak</h2>
+    <section class="block" id="data-diri">
+      <h2>Data diri</h2>
+      <dl class="field-list">
+        <dt>Asal daerah</dt>
+        <dd>Kabupaten Pasuruan, Jawa Timur</dd>
+        <dt>Asal sekolah</dt>
+        <dd>SMAN 1 Kejayan</dd>
+        <dt>Email</dt>
+        <dd><a href="mailto:aerzetha@gmail.com">aerzetha@gmail.com</a></dd>
+      </dl>
+    </section>
 
-    <div class="idea">
-      <div class="idea-head">
-        <h3>SecuScan</h3>
-        <span class="stack">Kotlin / Flutter · Android permission API</span>
+    <section class="block" id="kelebihan-kekurangan">
+      <h2>Kelebihan &amp; kekurangan</h2>
+      <div class="trait-grid">
+        <div class="trait-card">
+          <h3>Kelebihan</h3>
+          <p>Teliti dan sabar, betah menelusuri detail sampai tuntas.</p>
+        </div>
+        <div class="trait-card weak">
+          <h3>Kekurangan</h3>
+          <p>Cenderung menghabiskan waktu terlalu lama untuk memastikan sesuatu benar-benar detail, sehingga progres bisa melambat.</p>
+        </div>
       </div>
-      <p>Aplikasi pemeriksa kebiasaan keamanan digital: mengecek izin aplikasi yang terpasang, kekuatan pola/PIN, dan memberi rekomendasi perbaikan sederhana dalam bahasa awam.</p>
+    </section>
+
+    <section class="block" id="ide-project">
+      <h2>Ide project — Pemrograman Perangkat Bergerak</h2>
+      <div class="idea">
+        <div class="idea-head">
+          <h3>SecuScan</h3>
+          <span class="stack">Kotlin / Flutter · Android permission API</span>
+        </div>
+        <p>Aplikasi pemeriksa kebiasaan keamanan digital: mengecek izin aplikasi yang terpasang, kekuatan pola/PIN, dan memberi rekomendasi perbaikan sederhana dalam bahasa awam.</p>
+      </div>
+    </section>
+  </div>
+
+  <div id="tugas-2">
+    <div class="task-divider">
+      <span class="task-num">Tugas 2</span>
+      <h2 class="task-h">Hello Android — Jetpack Compose</h2>
     </div>
+
+    <section class="block" id="tugas2-ringkasan">
+      <h2>Ringkasan</h2>
+      <p class="summary-text">Aplikasi Android sederhana menggunakan Jetpack Compose yang menampilkan teks salam "Hello Android!" lewat sebuah composable <code>Greeting</code>, lengkap dengan fungsi <code>@Preview</code> untuk pratinjau langsung di Android Studio tanpa perlu menjalankan emulator.</p>
+    </section>
+
+    <section class="block" id="tugas2-kode">
+      <h2>Kode — MainActivity.kt</h2>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.helloandroid
+
+<span class="tok-kw">import</span> android.os.Bundle
+<span class="tok-kw">import</span> androidx.activity.ComponentActivity
+<span class="tok-kw">import</span> androidx.activity.compose.setContent
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.fillMaxSize
+<span class="tok-kw">import</span> androidx.compose.material3.MaterialTheme
+<span class="tok-kw">import</span> androidx.compose.material3.Surface
+<span class="tok-kw">import</span> androidx.compose.material3.Text
+<span class="tok-kw">import</span> androidx.compose.runtime.Composable
+<span class="tok-kw">import</span> androidx.compose.ui.Modifier
+<span class="tok-kw">import</span> androidx.compose.ui.tooling.preview.Preview
+
+<span class="tok-kw">class</span> MainActivity : ComponentActivity() {
+    <span class="tok-kw">override fun</span> onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    Greeting(name = <span class="tok-str">"Android"</span>)
+                }
+            }
+        }
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> Greeting(name: String) {
+    Text(text = <span class="tok-str">"Hello $name!"</span>)
+}
+
+<span class="tok-an">@Preview</span>(showBackground = <span class="tok-kw">true</span>)
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> GreetingPreview() {
+    MaterialTheme {
+        Greeting(<span class="tok-str">"Android"</span>)
+    }
+}</code></pre>
+    </section>
+
+    <section class="block" id="tugas2-preview">
+      <h2>Preview</h2>
+      <div class="preview-frame">
+        <img src="tugas2-preview.png" alt="Preview Compose GreetingPreview menampilkan teks Hello Android! di Android Studio">
+      </div>
+      <p class="preview-caption">GreetingPreview — pratinjau composable Greeting("Android") di Android Studio</p>
+    </section>
+  </div>
 
   <footer>
-    dibuat untuk keperluan tugas | terakhir diperbarui 2026
+    dibuat untuk keperluan tugas — terakhir diperbarui 2026
   </footer>
 
 </div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tabs-inner a');
+  var sections = [document.getElementById('tugas-1'), document.getElementById('tugas-2')];
+  function setActive(id){
+    tabs.forEach(function(a){
+      a.classList.toggle('active', a.dataset.tab === id);
+    });
+  }
+  if('IntersectionObserver' in window){
+    var observer = new IntersectionObserver(function(entries){
+      var visible = entries.filter(function(e){ return e.isIntersecting; });
+      if(visible.length){
+        visible.sort(function(a,b){ return b.intersectionRatio - a.intersectionRatio; });
+        setActive(visible[0].target.id);
+      }
+    }, { rootMargin: '-72px 0px -60% 0px', threshold: [0, 0.1, 0.25, 0.5] });
+    sections.forEach(function(s){ if(s) observer.observe(s); });
+  }
+  setActive('tugas-1');
+})();
+</script>
 
 </body>
 </html>
