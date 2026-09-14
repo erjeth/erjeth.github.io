@@ -6,280 +6,7 @@
 <title>Erzeth — Profil</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink: #161B22;
-    --ink-soft: #1F2630;
-    --paper: #EDEAE0;
-    --paper-dim: #C9C4B4;
-    --amber: #E8A33D;
-    --teal: #4FA5A0;
-    --rule: rgba(237,234,224,0.16);
-    --mono: 'IBM Plex Mono', monospace;
-    --sans: 'IBM Plex Sans', sans-serif;
-  }
-  *{ box-sizing: border-box; }
-  html{ scroll-behavior: smooth; }
-  body{
-    margin:0;
-    background: var(--ink);
-    color: var(--paper);
-    font-family: var(--sans);
-    line-height: 1.55;
-  }
-  @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior:auto; }
-    *{ animation: none !important; transition:none !important; }
-  }
-
-  .wrap{
-    max-width: 880px;
-    margin: 0 auto;
-    padding: 0 28px;
-  }
-
-  .hero{
-    padding: 72px 0 32px;
-  }
-  .hero-grid{
-    display:grid;
-    grid-template-columns: 140px 1fr;
-    gap: 32px;
-    align-items: center;
-  }
-  .photo-slot{
-    width: 140px;
-    height: 140px;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid var(--rule);
-    background: linear-gradient(155deg, rgba(232,163,61,0.06), rgba(79,165,160,0.05));
-  }
-  .photo-slot img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  .kicker{
-    font-family: var(--mono);
-    color: var(--teal);
-    font-size: 14px;
-    margin: 0 0 10px;
-  }
-  h1{
-    font-family: var(--sans);
-    font-weight: 700;
-    font-size: clamp(28px, 4vw, 40px);
-    line-height: 1.15;
-    margin: 0;
-    color: var(--paper);
-  }
-
-  /* ---------- Tabs nav ---------- */
-  .tabs-bar{
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    background: rgba(22,27,34,0.94);
-    backdrop-filter: blur(6px);
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-  }
-  .tabs-inner{
-    display: flex;
-    gap: 6px;
-    padding: 10px 0;
-  }
-  .tabs-inner a{
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--paper-dim);
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    transition: color .15s, background .15s;
-    line-height: 1.4;
-  }
-  .tabs-inner a:hover{ color: var(--paper); background: var(--ink-soft); }
-  .tabs-inner a.active{
-    color: var(--ink);
-    background: var(--amber);
-    font-weight: 600;
-  }
-
-  .task-divider{
-    padding: 56px 0 20px;
-    scroll-margin-top: 64px;
-  }
-  .task-divider .task-num{
-    font-family: var(--mono);
-    color: var(--teal);
-    font-size: 14px;
-    letter-spacing: 0.04em;
-  }
-  .task-divider h2.task-h{
-    font-family: var(--sans);
-    font-weight: 700;
-    font-size: 28px;
-    margin: 8px 0 0;
-    color: var(--paper);
-  }
-
-  section.block{
-    padding: 44px 0;
-    border-bottom: 1px solid var(--rule);
-    scroll-margin-top: 64px;
-  }
-  #tugas-2 section.block:last-of-type{ border-bottom: none; }
-  h2{
-    font-family: var(--mono);
-    font-weight: 500;
-    font-size: 20px;
-    color: var(--amber);
-    margin: 0 0 28px;
-  }
-
-  .field-list{
-    display:grid;
-    grid-template-columns: 150px 1fr;
-    row-gap: 16px;
-    column-gap: 24px;
-  }
-  .field-list dt{
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--paper-dim);
-    padding-top: 2px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--rule);
-  }
-  .field-list dd{
-    margin:0;
-    font-size: 16px;
-    color: var(--paper);
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .trait-grid{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .trait-card{
-    padding: 20px 22px;
-    border-left: 3px solid var(--amber);
-    background: var(--ink-soft);
-    border-radius: 0 8px 8px 0;
-  }
-  .trait-card.weak{ border-left-color: var(--teal); }
-  .trait-card h3{
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 500;
-    margin: 0 0 8px;
-    color: var(--paper);
-  }
-  .trait-card p{
-    margin: 0;
-    color: #C9C4B4;
-    font-size: 15px;
-  }
-  @media (max-width: 640px){
-    .trait-grid{ grid-template-columns: 1fr; }
-    .hero-grid{ grid-template-columns: 1fr; }
-    .photo-slot{ width: 108px; height: 108px; }
-    .field-list{ grid-template-columns: 120px 1fr; }
-    .tabs-inner{ gap: 4px; }
-  }
-
-  .idea{
-    padding: 20px 0;
-  }
-  .idea-head{
-    display:flex;
-    align-items: baseline;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-  .idea h3{
-    font-size: 19px;
-    font-weight: 700;
-    margin: 0;
-    color: var(--paper);
-  }
-  .idea .stack{
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--teal);
-  }
-  .idea p{
-    margin: 8px 0 0;
-    color: #C9C4B4;
-    font-size: 15px;
-    max-width: 68ch;
-  }
-
-  .code-block{
-    margin: 0;
-    padding: 20px 22px;
-    background: var(--ink-soft);
-    border: 1px solid var(--rule);
-    border-radius: 8px;
-    overflow-x: auto;
-    font-family: var(--mono);
-    font-size: 13px;
-    line-height: 1.65;
-    color: var(--paper);
-  }
-  .code-block .tok-kw{ color: var(--teal); }
-  .code-block .tok-an{ color: var(--amber); }
-  .code-block .tok-str{ color: #D9C89A; }
-
-  .preview-frame{
-    border: 1px solid var(--rule);
-    border-radius: 8px;
-    overflow: hidden;
-    background: var(--ink-soft);
-    max-width: 480px;
-  }
-  .preview-frame img{
-    width: 100%;
-    display: block;
-  }
-  .preview-caption{
-    margin: 10px 0 0;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--paper-dim);
-  }
-
-  .summary-text{
-    margin: 0;
-    color: #C9C4B4;
-    font-size: 15px;
-    max-width: 68ch;
-  }
-  .summary-text code{
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--teal);
-  }
-
-  footer{
-    padding: 36px 0 56px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--paper-dim);
-  }
-
-  a{ color: var(--amber); }
-  a:focus-visible, button:focus-visible{
-    outline: 2px solid var(--teal);
-    outline-offset: 3px;
-  }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -301,18 +28,19 @@
   <div class="wrap tabs-inner">
     <a href="#tugas-1" data-tab="tugas-1">Tugas 1</a>
     <a href="#tugas-2" data-tab="tugas-2">Tugas 2</a>
+    <a href="#tugas-3" data-tab="tugas-3">Tugas 3</a>
   </div>
 </div>
 
 <div class="wrap">
 
   <div id="tugas-1">
-    <div class="task-divider">
+    <div class="task-divider reveal">
       <span class="task-num">Tugas 1</span>
       <h2 class="task-h">Profil &amp; Ide Project</h2>
     </div>
 
-    <section class="block" id="data-diri">
+    <section class="block reveal" id="data-diri">
       <h2>Data diri</h2>
       <dl class="field-list">
         <dt>Asal daerah</dt>
@@ -324,7 +52,7 @@
       </dl>
     </section>
 
-    <section class="block" id="kelebihan-kekurangan">
+    <section class="block reveal" id="kelebihan-kekurangan">
       <h2>Kelebihan &amp; kekurangan</h2>
       <div class="trait-grid">
         <div class="trait-card">
@@ -338,7 +66,7 @@
       </div>
     </section>
 
-    <section class="block" id="ide-project">
+    <section class="block reveal" id="ide-project">
       <h2>Ide project — Pemrograman Perangkat Bergerak</h2>
       <div class="idea">
         <div class="idea-head">
@@ -351,17 +79,17 @@
   </div>
 
   <div id="tugas-2">
-    <div class="task-divider">
+    <div class="task-divider reveal">
       <span class="task-num">Tugas 2</span>
       <h2 class="task-h">Hello Android — Jetpack Compose</h2>
     </div>
 
-    <section class="block" id="tugas2-ringkasan">
+    <section class="block reveal" id="tugas2-ringkasan">
       <h2>Ringkasan</h2>
       <p class="summary-text">Aplikasi Android sederhana menggunakan Jetpack Compose yang menampilkan teks salam "Hello Android!" lewat sebuah composable <code>Greeting</code>, lengkap dengan fungsi <code>@Preview</code> untuk pratinjau langsung di Android Studio tanpa perlu menjalankan emulator.</p>
     </section>
 
-    <section class="block" id="tugas2-kode">
+    <section class="block reveal" id="tugas2-kode">
       <h2>Kode — MainActivity.kt</h2>
       <pre class="code-block"><code><span class="tok-kw">package</span> com.example.helloandroid
 
@@ -403,12 +131,298 @@
 }</code></pre>
     </section>
 
-    <section class="block" id="tugas2-preview">
+    <section class="block reveal" id="tugas2-preview">
       <h2>Preview</h2>
       <div class="preview-frame">
         <img src="tugas2-preview.png" alt="Preview Compose GreetingPreview menampilkan teks Hello Android! di Android Studio">
       </div>
       <p class="preview-caption">GreetingPreview — pratinjau composable Greeting("Android") di Android Studio</p>
+    </section>
+  </div>
+
+  <div id="tugas-3">
+    <div class="task-divider reveal">
+      <span class="task-num">Tugas 3</span>
+      <h2 class="task-h">Profile Card — Jetpack Compose</h2>
+    </div>
+
+    <section class="block reveal" id="tugas3-ringkasan">
+      <h2>Ringkasan</h2>
+      <p class="summary-text">Latihan menyusun tampilan profil mahasiswa memakai komponen dasar Jetpack Compose — foto, nama, NRP, dan program studi disusun berlapis dengan <code>Column</code> dan <code>Row</code>, tanpa database atau API, murni UI statis.</p>
+    </section>
+
+    <section class="block reveal" id="tugas3-komponen">
+      <h2>Komponen yang digunakan</h2>
+      <div class="component-grid">
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Text</strong><span>Menampilkan teks di layar.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Column</strong><span>Menyusun elemen secara vertikal.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Row</strong><span>Menyusun elemen secara horizontal.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Modifier</strong><span>Mengatur ukuran, jarak, padding, dan tampilan komponen.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas3-kode">
+      <h2>Kode — ProfileCard.kt</h2>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.helloandroid
+
+<span class="tok-kw">import</span> android.os.Bundle
+<span class="tok-kw">import</span> androidx.activity.ComponentActivity
+<span class="tok-kw">import</span> androidx.activity.compose.setContent
+<span class="tok-kw">import</span> androidx.compose.foundation.Image
+<span class="tok-kw">import</span> androidx.compose.foundation.background
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.*
+<span class="tok-kw">import</span> androidx.compose.foundation.shape.CircleShape
+<span class="tok-kw">import</span> androidx.compose.foundation.shape.RoundedCornerShape
+<span class="tok-kw">import</span> androidx.compose.material3.MaterialTheme
+<span class="tok-kw">import</span> androidx.compose.material3.Text
+<span class="tok-kw">import</span> androidx.compose.runtime.Composable
+<span class="tok-kw">import</span> androidx.compose.ui.Alignment
+<span class="tok-kw">import</span> androidx.compose.ui.Modifier
+<span class="tok-kw">import</span> androidx.compose.ui.draw.clip
+<span class="tok-kw">import</span> androidx.compose.ui.graphics.Color
+<span class="tok-kw">import</span> androidx.compose.ui.layout.ContentScale
+<span class="tok-kw">import</span> androidx.compose.ui.res.painterResource
+<span class="tok-kw">import</span> androidx.compose.ui.text.font.FontWeight
+<span class="tok-kw">import</span> androidx.compose.ui.text.style.TextAlign
+<span class="tok-kw">import</span> androidx.compose.ui.tooling.preview.Preview
+<span class="tok-kw">import</span> androidx.compose.ui.unit.dp
+<span class="tok-kw">import</span> androidx.compose.ui.unit.sp
+
+<span class="tok-kw">class</span> MainActivity : ComponentActivity() {
+    <span class="tok-kw">override fun</span> onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                ProfileCard()
+            }
+        }
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> ProfileCard() {
+    <span class="tok-kw">val</span> blueBackground = Color(<span class="tok-str">0xFF0D5DAA</span>)
+    <span class="tok-kw">val</span> blueHeader = Color(<span class="tok-str">0xFF074A8D</span>)
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(blueBackground)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(blueHeader)
+                .padding(horizontal = 24.dp, vertical = 18.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.logo_its),
+                contentDescription = <span class="tok-str">"Logo ITS"</span>,
+                modifier = Modifier.size(42.dp)
+            )
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Text(
+                text = <span class="tok-str">"INSTITUT TEKNOLOGI SEPULUH NOPEMBER"</span>,
+                color = Color.White,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+
+            Text(
+                text = <span class="tok-str">"DATA MAHASISWA"</span>,
+                color = Color.White.copy(alpha = 0.8f),
+                fontSize = 9.sp,
+                fontWeight = FontWeight.Medium
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 16.dp)
+                .clip(RoundedCornerShape(24.dp))
+                .background(Color.White)
+                .padding(horizontal = 20.dp, vertical = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.weight(0.5f))
+
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.foto_profil),
+                    contentDescription = <span class="tok-str">"Foto profil"</span>,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(110.dp)
+                        .clip(CircleShape)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = <span class="tok-str">"PROFIL MAHASISWA"</span>,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(<span class="tok-str">0xFF172B4D</span>),
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                ProfileItem(
+                    icon = <span class="tok-str">"👤"</span>,
+                    label = <span class="tok-str">"Nama"</span>,
+                    value = <span class="tok-str">"Achmad Mirza Arzheta Rahman"</span>
+                )
+
+                ProfileItem(
+                    icon = <span class="tok-str">"🪪"</span>,
+                    label = <span class="tok-str">"NRP"</span>,
+                    value = <span class="tok-str">"5053251011"</span>
+                )
+
+                ProfileItem(
+                    icon = <span class="tok-str">"🎓"</span>,
+                    label = <span class="tok-str">"Program Studi"</span>,
+                    value = <span class="tok-str">"S1 Rekayasa Perangkat Lunak"</span>
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                InfoBadge(
+                    icon = <span class="tok-str">"🎓"</span>,
+                    text = <span class="tok-str">"Mahasiswa"</span>
+                )
+
+                InfoBadge(
+                    icon = <span class="tok-str">"📚"</span>,
+                    text = <span class="tok-str">"Semester 3"</span>
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(0.5f))
+        }
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> ProfileItem(
+    icon: String,
+    label: String,
+    value: String
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(Color(<span class="tok-str">0xFFE8F1FA</span>)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = icon,
+                fontSize = 18.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.width(14.dp))
+
+        Column {
+            Text(
+                text = label,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.Gray
+            )
+
+            Text(
+                text = value,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color(<span class="tok-str">0xFF172B4D</span>)
+            )
+        }
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> InfoBadge(
+    icon: String,
+    text: String
+) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(10.dp))
+            .background(Color(<span class="tok-str">0xFFE8F1FA</span>))
+            .padding(horizontal = 14.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = icon,
+            fontSize = 14.sp
+        )
+
+        Spacer(modifier = Modifier.width(6.dp))
+
+        Text(
+            text = text,
+            fontSize = 11.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = Color(<span class="tok-str">0xFF174A7E</span>)
+        )
+    }
+}
+
+<span class="tok-an">@Preview</span>(showBackground = <span class="tok-kw">true</span>, showSystemUi = <span class="tok-kw">true</span>)
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> ProfileCardPreview() {
+    MaterialTheme {
+        ProfileCard()
+    }
+}</code></pre>
+    </section>
+
+    <section class="block reveal" id="tugas3-preview">
+      <h2>Preview</h2>
+      <div class="preview-frame">
+        <img src="tugas3-preview.png" alt="Preview ProfileCard Jetpack Compose">
+      </div>
+      <p class="preview-caption">ProfileCardPreview — pratinjau composable ProfileCard di Android Studio</p>
     </section>
   </div>
 
@@ -421,23 +435,52 @@
 <script>
 (function(){
   var tabs = document.querySelectorAll('.tabs-inner a');
-  var sections = [document.getElementById('tugas-1'), document.getElementById('tugas-2')];
+  var sections = [
+    document.getElementById('tugas-1'),
+    document.getElementById('tugas-2'),
+    document.getElementById('tugas-3')
+  ].filter(Boolean);
+
   function setActive(id){
     tabs.forEach(function(a){
       a.classList.toggle('active', a.dataset.tab === id);
     });
   }
+
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(e){
+      var targetId = this.getAttribute('data-tab');
+      setActive(targetId);
+    });
+  });
+
   if('IntersectionObserver' in window){
-    var observer = new IntersectionObserver(function(entries){
-      var visible = entries.filter(function(e){ return e.isIntersecting; });
-      if(visible.length){
-        visible.sort(function(a,b){ return b.intersectionRatio - a.intersectionRatio; });
-        setActive(visible[0].target.id);
-      }
-    }, { rootMargin: '-72px 0px -60% 0px', threshold: [0, 0.1, 0.25, 0.5] });
-    sections.forEach(function(s){ if(s) observer.observe(s); });
+    var navObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          setActive(entry.target.id);
+        }
+      });
+    }, { 
+      rootMargin: '-20% 0px -60% 0px', 
+      threshold: 0 
+    });
+
+    sections.forEach(function(s){ navObserver.observe(s); });
+
+    var revealObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(function(el){ revealObserver.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in-view'); });
   }
-  setActive('tugas-1');
 })();
 </script>
 
