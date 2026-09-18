@@ -10,6 +10,8 @@
 </head>
 <body>
 
+<div class="progress-bar"></div>
+
 <div class="wrap">
   <header class="hero">
     <div class="hero-grid">
@@ -29,6 +31,7 @@
     <a href="#tugas-1" data-tab="tugas-1">Tugas 1</a>
     <a href="#tugas-2" data-tab="tugas-2">Tugas 2</a>
     <a href="#tugas-3" data-tab="tugas-3">Tugas 3</a>
+    <a href="#tugas-4" data-tab="tugas-4">Tugas 4</a>
   </div>
 </div>
 
@@ -91,6 +94,8 @@
 
     <section class="block reveal" id="tugas2-kode">
       <h2>Kode — MainActivity.kt</h2>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
       <pre class="code-block"><code><span class="tok-kw">package</span> com.example.helloandroid
 
 <span class="tok-kw">import</span> android.os.Bundle
@@ -129,6 +134,7 @@
         Greeting(<span class="tok-str">"Android"</span>)
     }
 }</code></pre>
+      </div>
     </section>
 
     <section class="block reveal" id="tugas2-preview">
@@ -175,7 +181,9 @@
 
     <section class="block reveal" id="tugas3-kode">
       <h2>Kode — ProfileCard.kt</h2>
-      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.helloandroid
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.profilecard
 
 <span class="tok-kw">import</span> android.os.Bundle
 <span class="tok-kw">import</span> androidx.activity.ComponentActivity
@@ -420,9 +428,170 @@
     <section class="block reveal" id="tugas3-preview">
       <h2>Preview</h2>
       <div class="preview-frame">
-        <img src="tugas3-preview.png" alt="Preview ProfileCard Jetpack Compose">
+        <img src="tugas3-preview.png" alt="Preview menampilkan profil! di Android Studio">
       </div>
-      <p class="preview-caption">ProfileCardPreview — pratinjau composable ProfileCard di Android Studio</p>
+      <p class="preview-caption">ProfilePreview — pratinjau profile di Android Studio</p>
+    </section>
+  </div>
+
+  <div id="tugas-4">
+    <div class="task-divider reveal">
+      <span class="task-num">Tugas 4</span>
+      <h2 class="task-h">Ucapan Ulang Tahun — Jetpack Compose</h2>
+    </div>
+
+    <section class="block reveal" id="tugas4-ringkasan">
+      <h2>Ringkasan</h2>
+      <p class="summary-text">Aplikasi ucapan ulang tahun dengan tampilan gradien dan kue emoji yang beranimasi naik-turun terus-menerus lewat <code>rememberInfiniteTransition</code>. Nama ditulis di kolom input, lalu tombol "Kirim Ucapan" memunculkan pesan personal dengan animasi <code>AnimatedVisibility</code>.</p>
+    </section>
+
+    <section class="block reveal" id="tugas4-kode">
+      <h2>Kode — MainActivity.kt</h2>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.ucapanulangtahun
+
+<span class="tok-kw">import</span> android.os.Bundle
+<span class="tok-kw">import</span> androidx.activity.ComponentActivity
+<span class="tok-kw">import</span> androidx.activity.compose.setContent
+<span class="tok-kw">import</span> androidx.compose.animation.AnimatedVisibility
+<span class="tok-kw">import</span> androidx.compose.animation.core.*
+<span class="tok-kw">import</span> androidx.compose.foundation.background
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.*
+<span class="tok-kw">import</span> androidx.compose.foundation.shape.RoundedCornerShape
+<span class="tok-kw">import</span> androidx.compose.foundation.text.KeyboardOptions
+<span class="tok-kw">import</span> androidx.compose.material3.*
+<span class="tok-kw">import</span> androidx.compose.runtime.*
+<span class="tok-kw">import</span> androidx.compose.ui.Alignment
+<span class="tok-kw">import</span> androidx.compose.ui.Modifier
+<span class="tok-kw">import</span> androidx.compose.ui.graphics.Brush
+<span class="tok-kw">import</span> androidx.compose.ui.graphics.Color
+<span class="tok-kw">import</span> androidx.compose.ui.text.font.FontWeight
+<span class="tok-kw">import</span> androidx.compose.ui.text.input.ImeAction
+<span class="tok-kw">import</span> androidx.compose.ui.text.style.TextAlign
+<span class="tok-kw">import</span> androidx.compose.ui.tooling.preview.Preview
+<span class="tok-kw">import</span> androidx.compose.ui.unit.dp
+<span class="tok-kw">import</span> androidx.compose.ui.unit.sp
+
+<span class="tok-kw">class</span> MainActivity : ComponentActivity() {
+    <span class="tok-kw">override fun</span> onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                BirthdayApp()
+            }
+        }
+    }
+}
+
+<span class="tok-kw">private val</span> GradientTop = Color(0xFFFF6B9D)
+<span class="tok-kw">private val</span> GradientBottom = Color(0xFFFFC371)
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> BirthdayApp() {
+    <span class="tok-kw">var</span> name by remember { mutableStateOf(<span class="tok-str">""</span>) }
+    <span class="tok-kw">var</span> showMessage by remember { mutableStateOf(false) }
+
+    <span class="tok-kw">val</span> infiniteTransition = rememberInfiniteTransition(label = <span class="tok-str">"cake-bounce"</span>)
+    <span class="tok-kw">val</span> bounce by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = -14f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 700, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = <span class="tok-str">"bounce"</span>
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Brush.verticalGradient(listOf(GradientTop, GradientBottom)))
+            .padding(24.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = <span class="tok-str">"\uD83C\uDF88  \uD83C\uDF89  \uD83C\uDF88"</span>, fontSize = 32.sp)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = <span class="tok-str">"\uD83C\uDF82"</span>,
+                fontSize = 72.sp,
+                modifier = Modifier.offset(y = bounce.dp)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = <span class="tok-str">"Selamat Ulang Tahun!"</span>,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Card(
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.94f)),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text(text = <span class="tok-str">"Untuk siapa ucapan ini?"</span>, fontWeight = FontWeight.Medium, fontSize = 14.sp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        value = name,
+                        onValueChange = { name = it; showMessage = false },
+                        placeholder = { Text(<span class="tok-str">"Masukkan nama"</span>) },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(
+                        onClick = { showMessage = true },
+                        enabled = name.isNotBlank(),
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(containerColor = GradientTop)
+                    ) {
+                        Text(<span class="tok-str">"Kirim Ucapan \uD83C\uDF81"</span>)
+                    }
+
+                    AnimatedVisibility(visible = showMessage) {
+                        Column(modifier = Modifier.padding(top = 16.dp)) {
+                            Divider()
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(text = <span class="tok-str">"Selamat ulang tahun, $name! \uD83C\uDF89"</span>, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = <span class="tok-str">"Semoga panjang umur, sehat selalu, dan semua harapan tahun ini terwujud. Selamat merayakan! \uD83E\uDD73"</span>,
+                                fontSize = 14.sp,
+                                color = Color.DarkGray
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+<span class="tok-an">@Preview</span>(showBackground = <span class="tok-kw">true</span>)
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> BirthdayAppPreview() {
+    MaterialTheme {
+        BirthdayApp()
+    }
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas4-preview">
+      <h2>Preview</h2>
+      <div class="preview-frame">
+        <img src="tugas4-preview.png" alt="Preview menampilkan ucapan selamat ulang tahun! di Android Studio">
+      </div>
+      <p class="preview-caption">BirthdayPreview — pratinjau Ucapan Selamat ulang tahun di Android Studio</p>
     </section>
   </div>
 
@@ -432,57 +601,7 @@
 
 </div>
 
-<script>
-(function(){
-  var tabs = document.querySelectorAll('.tabs-inner a');
-  var sections = [
-    document.getElementById('tugas-1'),
-    document.getElementById('tugas-2'),
-    document.getElementById('tugas-3')
-  ].filter(Boolean);
-
-  function setActive(id){
-    tabs.forEach(function(a){
-      a.classList.toggle('active', a.dataset.tab === id);
-    });
-  }
-
-  tabs.forEach(function(tab){
-    tab.addEventListener('click', function(e){
-      var targetId = this.getAttribute('data-tab');
-      setActive(targetId);
-    });
-  });
-
-  if('IntersectionObserver' in window){
-    var navObserver = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          setActive(entry.target.id);
-        }
-      });
-    }, { 
-      rootMargin: '-20% 0px -60% 0px', 
-      threshold: 0 
-    });
-
-    sections.forEach(function(s){ navObserver.observe(s); });
-
-    var revealObserver = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          entry.target.classList.add('in-view');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.reveal').forEach(function(el){ revealObserver.observe(el); });
-  } else {
-    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in-view'); });
-  }
-})();
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
