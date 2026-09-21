@@ -32,6 +32,7 @@
     <a href="#tugas-2" data-tab="tugas-2">Tugas 2</a>
     <a href="#tugas-3" data-tab="tugas-3">Tugas 3</a>
     <a href="#tugas-4" data-tab="tugas-4">Tugas 4</a>
+    <a href="#tugas-5" data-tab="tugas-5">Tugas 5</a>
   </div>
 </div>
 
@@ -423,6 +424,7 @@
         ProfileCard()
     }
 }</code></pre>
+      </div>
     </section>
 
     <section class="block reveal" id="tugas3-preview">
@@ -595,11 +597,153 @@
     </section>
   </div>
 
+  <div id="tugas-5">
+    <div class="task-divider reveal">
+      <span class="task-num">Tugas 5</span>
+      <h2 class="task-h">Greeting Card — Jetpack Compose</h2>
+    </div>
+
+    <section class="block reveal" id="tugas5-ringkasan">
+      <h2>Ringkasan</h2>
+      <p class="summary-text">Latihan paling dasar di Jetpack Compose: kartu ucapan selamat datang dengan judul, subjudul, dan satu tombol aksi — fokus sepenuhnya pada tiga composable inti tanpa state atau animasi tambahan.</p>
+    </section>
+
+    <section class="block reveal" id="tugas5-komponen">
+      <h2>Komponen yang digunakan</h2>
+      <div class="component-grid">
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Column</strong><span>Menyusun emoji, judul, subjudul, dan tombol secara vertikal.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Text</strong><span>Menampilkan salam "Hello, Android!" dan keterangannya.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Button</strong><span>Tombol "Start" sebagai aksi utama kartu.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas5-kode">
+      <h2>Kode — MainActivity.kt</h2>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.greetingcard
+
+<span class="tok-kw">import</span> android.os.Bundle
+<span class="tok-kw">import</span> androidx.activity.ComponentActivity
+<span class="tok-kw">import</span> androidx.activity.compose.setContent
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.Arrangement
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.Column
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.Spacer
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.fillMaxSize
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.fillMaxWidth
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.height
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.padding
+<span class="tok-kw">import</span> androidx.compose.foundation.shape.RoundedCornerShape
+<span class="tok-kw">import</span> androidx.compose.material3.Button
+<span class="tok-kw">import</span> androidx.compose.material3.ButtonDefaults
+<span class="tok-kw">import</span> androidx.compose.material3.MaterialTheme
+<span class="tok-kw">import</span> androidx.compose.material3.Surface
+<span class="tok-kw">import</span> androidx.compose.material3.Text
+<span class="tok-kw">import</span> androidx.compose.runtime.Composable
+<span class="tok-kw">import</span> androidx.compose.ui.Alignment
+<span class="tok-kw">import</span> androidx.compose.ui.Modifier
+<span class="tok-kw">import</span> androidx.compose.ui.graphics.Color
+<span class="tok-kw">import</span> androidx.compose.ui.text.font.FontWeight
+<span class="tok-kw">import</span> androidx.compose.ui.text.style.TextAlign
+<span class="tok-kw">import</span> androidx.compose.ui.tooling.preview.Preview
+<span class="tok-kw">import</span> androidx.compose.ui.unit.dp
+<span class="tok-kw">import</span> androidx.compose.ui.unit.sp
+
+<span class="tok-kw">class</span> MainActivity : ComponentActivity() {
+    <span class="tok-kw">override fun</span> onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = Color(<span class="tok-str">0xFFEAF2FF</span>)
+                ) {
+                    GreetingCard()
+                }
+            }
+        }
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> GreetingCard() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(text = <span class="tok-str">"\uD83D\uDC4B"</span>, fontSize = 48.sp)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = <span class="tok-str">"Hello, Android!"</span>,
+            fontSize = 26.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(<span class="tok-str">0xFF1A1A2E</span>)
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        Text(
+            text = <span class="tok-str">"Welcome to Jetpack Compose"</span>,
+            fontSize = 15.sp,
+            color = Color(<span class="tok-str">0xFF6B6B80</span>),
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(28.dp))
+
+        Button(
+            onClick = { <span class="tok-cm">/* TODO: aksi ketika tombol ditekan */</span> },
+            shape = RoundedCornerShape(50),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(<span class="tok-str">0xFF3D7BFF</span>)),
+            modifier = Modifier
+                .fillMaxWidth(0.6f)
+                .height(48.dp)
+        ) {
+            Text(text = <span class="tok-str">"Start"</span>, fontSize = 16.sp)
+        }
+    }
+}
+
+<span class="tok-an">@Preview</span>(showBackground = <span class="tok-kw">true</span>)
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> GreetingCardPreview() {
+    MaterialTheme {
+        GreetingCard()
+    }
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas5-preview">
+      <h2>Preview</h2>
+      <div class="preview-frame">
+        <img src="tugas5-preview.png" alt="Preview menampilkan ucapan selamat datang! di Android Studio">
+      </div>
+      <p class="preview-caption">GreetingPreview — pratinjau Ucapan Selamat datang di Android Studio</p>
+    </section>
+  </div>
+
   <footer>
     dibuat untuk keperluan tugas — terakhir diperbarui 2026
   </footer>
 
 </div>
+
+<button class="to-top" id="to-top" type="button" aria-label="Kembali ke atas">↑</button>
 
 <script src="script.js"></script>
 

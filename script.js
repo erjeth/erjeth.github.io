@@ -73,4 +73,14 @@
       btn.classList.remove('copied');
     }, 1500);
   }
+
+  var toTop = document.getElementById('to-top');
+  if(toTop){
+    window.addEventListener('scroll', function(){
+      toTop.classList.toggle('show', window.scrollY > 480);
+    }, { passive: true });
+    toTop.addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 })();

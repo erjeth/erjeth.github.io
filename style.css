@@ -292,6 +292,7 @@ h2{
 .code-block .tok-kw{ color: var(--teal); }
 .code-block .tok-an{ color: var(--amber); }
 .code-block .tok-str{ color: #D9C89A; }
+.code-block .tok-cm{ color: var(--paper-dim); font-style: italic; }
 .code-block .tok-nm{ color: var(--blue); }
 
 .preview-frame{
@@ -401,4 +402,85 @@ a:focus-visible, button:focus-visible{
   font-size: 11.5px;
   color: rgba(201,196,180,0.6);
   margin: 0;
+}
+
+h1{
+  background: linear-gradient(100deg, var(--paper) 30%, var(--teal) 55%, var(--amber) 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 220% 100%;
+  background-position: 0% 0%;
+  transition: background-position 1.2s ease;
+}
+.hero:hover h1{ background-position: 100% 0%; }
+
+.hero::before{
+  animation: driftBlob 14s ease-in-out infinite;
+}
+@keyframes driftBlob{
+  0%, 100%{ transform: translate(0, 0) scale(1); }
+  50%{ transform: translate(-24px, 18px) scale(1.08); }
+}
+
+.trait-card,
+.component-chip,
+.preview-frame,
+.preview-placeholder{
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.trait-card:hover,
+.component-chip:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+}
+.preview-frame:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.3);
+}
+.idea{
+  transition: padding-left .25s ease, border-color .25s ease;
+  border-left: 2px solid transparent;
+}
+.idea:hover{
+  padding-left: 12px;
+  border-left: 2px solid var(--amber);
+}
+
+.to-top{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--ink-soft);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease, background .2s ease, border-color .2s ease;
+  z-index: 30;
+}
+.to-top.show{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.to-top:hover{
+  background: var(--amber);
+  color: var(--ink);
+  border-color: var(--amber);
+}
+
+@media (prefers-reduced-motion: reduce){
+  .hero::before{ animation: none; }
+  h1{ transition: none; }
 }
