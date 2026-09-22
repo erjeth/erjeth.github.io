@@ -33,6 +33,7 @@
     <a href="#tugas-3" data-tab="tugas-3">Tugas 3</a>
     <a href="#tugas-4" data-tab="tugas-4">Tugas 4</a>
     <a href="#tugas-5" data-tab="tugas-5">Tugas 5</a>
+    <a href="#tugas-6" data-tab="tugas-6">Tugas 6</a>
   </div>
 </div>
 
@@ -734,6 +735,133 @@
         <img src="tugas5-preview.png" alt="Preview menampilkan ucapan selamat datang! di Android Studio">
       </div>
       <p class="preview-caption">GreetingPreview — pratinjau Ucapan Selamat datang di Android Studio</p>
+    </section>
+  </div>
+
+  <div id="tugas-6">
+    <div class="task-divider reveal">
+      <span class="task-num">Tugas 6</span>
+      <h2 class="task-h">Dice Roller — Jetpack Compose</h2>
+    </div>
+
+    <section class="block reveal" id="tugas6-ringkasan">
+      <h2>Ringkasan</h2>
+      <p class="summary-text">Aplikasi kocok dadu — gambar dadu berganti secara acak (1 sampai 6) setiap tombol "Roll" ditekan. Nilai dadu disimpan lewat <code>remember { mutableStateOf(...) }</code> sehingga UI otomatis re-render setiap state-nya berubah.</p>
+    </section>
+
+    <section class="block reveal" id="tugas6-komponen">
+      <h2>Komponen yang digunakan</h2>
+      <div class="component-grid">
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Column</strong><span>Menyusun gambar dadu dan tombol secara vertikal.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Image</strong><span>Menampilkan gambar dadu sesuai hasil kocokan.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Button</strong><span>Memicu pengocokan angka acak saat ditekan.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>State (remember)</strong><span>Menyimpan hasil dadu supaya UI ikut berubah tiap ditekan.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas6-kode">
+      <h2>Kode — MainActivity.kt</h2>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-cm"></span>
+<span class="tok-kw">package</span> com.example.diceroller
+
+<span class="tok-kw">import</span> android.os.Bundle
+<span class="tok-kw">import</span> androidx.activity.ComponentActivity
+<span class="tok-kw">import</span> androidx.activity.compose.setContent
+<span class="tok-kw">import</span> androidx.compose.foundation.Image
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.Column
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.Spacer
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.fillMaxSize
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.height
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.wrapContentSize
+<span class="tok-kw">import</span> androidx.compose.material3.Button
+<span class="tok-kw">import</span> androidx.compose.material3.MaterialTheme
+<span class="tok-kw">import</span> androidx.compose.material3.Surface
+<span class="tok-kw">import</span> androidx.compose.material3.Text
+<span class="tok-kw">import</span> androidx.compose.runtime.Composable
+<span class="tok-kw">import</span> androidx.compose.runtime.getValue
+<span class="tok-kw">import</span> androidx.compose.runtime.mutableStateOf
+<span class="tok-kw">import</span> androidx.compose.runtime.remember
+<span class="tok-kw">import</span> androidx.compose.runtime.setValue
+<span class="tok-kw">import</span> androidx.compose.ui.Alignment
+<span class="tok-kw">import</span> androidx.compose.ui.Modifier
+<span class="tok-kw">import</span> androidx.compose.ui.res.painterResource
+<span class="tok-kw">import</span> androidx.compose.ui.res.stringResource
+<span class="tok-kw">import</span> androidx.compose.ui.tooling.preview.Preview
+<span class="tok-kw">import</span> androidx.compose.ui.unit.dp
+<span class="tok-kw">import</span> androidx.compose.ui.unit.sp
+<span class="tok-kw">import</span> com.example.diceroller.ui.theme.DiceRollerTheme
+
+<span class="tok-kw">class</span> MainActivity : ComponentActivity() {
+    <span class="tok-kw">override fun</span> onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            DiceRollerTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    DiceRollerApp()
+                }
+            }
+        }
+    }
+}
+
+<span class="tok-an">@Preview</span>
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> DiceRollerApp() {
+    DiceWithButtonAndImage(modifier = Modifier
+        .fillMaxSize()
+        .wrapContentSize(Alignment.Center)
+    )
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> DiceWithButtonAndImage(modifier: Modifier = Modifier) {
+    <span class="tok-kw">var</span> result by remember { mutableStateOf(1) }
+    <span class="tok-kw">val</span> imageResource = when(result) {
+        1 -> R.drawable.dice_1
+        2 -> R.drawable.dice_2
+        3 -> R.drawable.dice_3
+        4 -> R.drawable.dice_4
+        5 -> R.drawable.dice_5
+        else -> R.drawable.dice_6
+    }
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        Image(painter = painterResource(imageResource), contentDescription = result.toString())
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = { result = (1..6).random() }
+        ) {
+            Text(text = stringResource(R.string.roll), fontSize = 24.sp)
+        }
+    }
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas6-preview">
+      <h2>Preview</h2>
+      <div class="preview-frame">
+        <img src="tugas6-preview.png" alt="Preview aplikasi Dice Roller menampilkan gambar dadu dan tombol Roll di Android Studio">
+      </div>
+      <p class="preview-caption">DiceRollerApp — pratinjau composable DiceWithButtonAndImage di Android Studio</p>
     </section>
   </div>
 
