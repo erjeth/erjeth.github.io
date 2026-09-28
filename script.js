@@ -1,4 +1,5 @@
 (function(){
+  /* ---------- Scroll progress bar ---------- */
   var progressBar = document.querySelector('.progress-bar');
   function updateProgress(){
     if(!progressBar) return;
@@ -10,6 +11,7 @@
   window.addEventListener('scroll', updateProgress, { passive: true });
   updateProgress();
 
+  /* ---------- Tabs: scroll-spy active state ---------- */
   var tabs = document.querySelectorAll('.tabs-inner a');
   var sections = Array.prototype.map.call(tabs, function(a){
     return document.getElementById(a.dataset.tab);
@@ -31,6 +33,7 @@
     }, { rootMargin: '-72px 0px -60% 0px', threshold: [0, 0.1, 0.25, 0.5] });
     sections.forEach(function(s){ if(s) navObserver.observe(s); });
 
+    /* ---------- Reveal-on-scroll ---------- */
     var revealObserver = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
         if(entry.isIntersecting){
@@ -38,13 +41,14 @@
           revealObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
     document.querySelectorAll('.reveal').forEach(function(el){ revealObserver.observe(el); });
   } else {
     document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in-view'); });
   }
   setActive(sections[0] ? sections[0].id : 'tugas-1');
 
+  /* ---------- Copy-to-clipboard on code blocks ---------- */
   document.querySelectorAll('.copy-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
       var pre = btn.closest('.code-wrap').querySelector('pre');
@@ -74,6 +78,7 @@
     }, 1500);
   }
 
+  /* ---------- Back to top button ---------- */
   var toTop = document.getElementById('to-top');
   if(toTop){
     window.addEventListener('scroll', function(){
