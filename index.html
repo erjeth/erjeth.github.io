@@ -35,6 +35,7 @@
     <a href="#tugas-5" data-tab="tugas-5">Tugas 5</a>
     <a href="#tugas-6" data-tab="tugas-6">Tugas 6</a>
     <a href="#tugas-7" data-tab="tugas-7">Tugas 7</a>
+    <a href="#tugas-8" data-tab="tugas-8">Kuis 1</a>
   </div>
 </div>
 
@@ -708,7 +709,75 @@
         Spacer(modifier = Modifier.height(28.dp))
 
         Button(
-            onClick = { <span class="tok-kw">package</span> com.example.diceroller
+            onClick = { <span class="tok-cm">/* TODO: aksi ketika tombol ditekan */</span> },
+            shape = RoundedCornerShape(50),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(<span class="tok-str">0xFF3D7BFF</span>)),
+            modifier = Modifier
+                .fillMaxWidth(0.6f)
+                .height(48.dp)
+        ) {
+            Text(text = <span class="tok-str">"Start"</span>, fontSize = 16.sp)
+        }
+    }
+}
+
+<span class="tok-an">@Preview</span>(showBackground = <span class="tok-kw">true</span>)
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> GreetingCardPreview() {
+    MaterialTheme {
+        GreetingCard()
+    }
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas5-preview">
+      <h2>Preview</h2>
+      <div class="preview-frame">
+        <img src="tugas5-preview.png" alt="Preview menampilkan ucapan selamat datang! di Android Studio">
+      </div>
+      <p class="preview-caption">GreetingPreview: pratinjau Ucapan Selamat datang di Android Studio</p>
+    </section>
+  </div>
+
+  <div id="tugas-6">
+    <div class="task-divider reveal">
+      <span class="task-num">Tugas 6</span>
+      <h2 class="task-h">Dice Roller: Jetpack Compose</h2>
+    </div>
+
+    <section class="block reveal" id="tugas6-ringkasan">
+      <h2>Ringkasan</h2>
+      <p class="summary-text">Aplikasi kocok dadu, gambar dadu berganti secara acak (1 sampai 6) setiap tombol "Roll" ditekan. Nilai dadu disimpan lewat <code>remember { mutableStateOf(...) }</code> sehingga UI otomatis re-render setiap state-nya berubah.</p>
+    </section>
+
+    <section class="block reveal" id="tugas6-komponen">
+      <h2>Komponen yang digunakan</h2>
+      <div class="component-grid">
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Column</strong><span>Menyusun gambar dadu dan tombol secara vertikal.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Image</strong><span>Menampilkan gambar dadu sesuai hasil kocokan.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Button</strong><span>Memicu pengocokan angka acak saat ditekan.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>State (remember)</strong><span>Menyimpan hasil dadu supaya UI ikut berubah tiap ditekan.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas6-kode">
+      <h2>Kode: MainActivity.kt</h2>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.diceroller
 
 <span class="tok-kw">import</span> android.os.Bundle
 <span class="tok-kw">import</span> androidx.activity.ComponentActivity
@@ -766,12 +835,12 @@
 <span class="tok-kw">fun</span> DiceWithButtonAndImage(modifier: Modifier = Modifier) {
     <span class="tok-kw">var</span> result by remember { mutableStateOf(1) }
     <span class="tok-kw">val</span> imageResource = when(result) {
-        1 -> R.drawable.dice_1
-        2 -> R.drawable.dice_2
-        3 -> R.drawable.dice_3
-        4 -> R.drawable.dice_4
-        5 -> R.drawable.dice_5
-        else -> R.drawable.dice_6
+        1 -&gt; R.drawable.dice_1
+        2 -&gt; R.drawable.dice_2
+        3 -&gt; R.drawable.dice_3
+        4 -&gt; R.drawable.dice_4
+        5 -&gt; R.drawable.dice_5
+        else -&gt; R.drawable.dice_6
     }
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Image(painter = painterResource(imageResource), contentDescription = result.toString())
@@ -1183,6 +1252,391 @@
         <img src="tugas7-preview.png" alt="Preview aplikasi FoodHunt menampilkan menu Nasi Goreng Spesial di Android Studio">
       </div>
       <p class="preview-caption">FoodOrderingAppPreview: pratinjau aplikasi FoodHunt di Android Studio</p>
+    </section>
+  </div>
+
+  <div id="tugas-8">
+    <div class="task-divider reveal">
+      <span class="task-num">Kuis 1</span>
+      <h2 class="task-h">Student Manager</h2>
+    </div>
+
+    <section class="block reveal" id="tugas8-ringkasan">
+      <h2>Ringkasan</h2>
+      <p class="summary-text">Aplikasi pengelolaan data mahasiswa (Student Manager) yang dibangun sebagai Mini Project. Aplikasi ini mencakup fitur Splash Screen otomatis, daftar mahasiswa dengan pencarian (Search), form penambahan dan pengubahan data dengan Dropdown Menu, serta dialog konfirmasi penghapusan. Tampilan UI dibangun menggunakan <code>Scaffold</code>, <code>TopAppBar</code>, dan <code>FloatingActionButton</code> agar persis seperti wireframe, sementara datanya murni dikelola menggunakan <i>state lokal</i> (<code>remember { mutableStateOf() }</code>).</p>
+    </section>
+
+    <section class="block reveal" id="tugas8-komponen">
+      <h2>Komponen yang digunakan</h2>
+      <div class="component-grid">
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Scaffold &amp; TopAppBar</strong><span>Kerangka utama aplikasi yang menampung header, menu navigasi, dan tombol aksi mengambang.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>LazyColumn &amp; Card</strong><span>Menampilkan daftar data mahasiswa secara efisien dan rapi dalam bentuk kartu.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>AlertDialog</strong><span>Menampilkan pop-up konfirmasi sebelum menghapus data mahasiswa dan info tentang aplikasi.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>ExposedDropdownMenuBox</strong><span>Membuat form pilihan (dropdown) interaktif untuk Program Studi.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas8-kode">
+      <h2>Kode: MainActivity.kt</h2>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.studentmanager
+
+<span class="tok-kw">import</span> android.app.Activity
+<span class="tok-kw">import</span> android.os.Bundle
+<span class="tok-kw">import</span> androidx.activity.ComponentActivity
+<span class="tok-kw">import</span> androidx.activity.compose.setContent
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.*
+<span class="tok-kw">import</span> androidx.compose.foundation.lazy.LazyColumn
+<span class="tok-kw">import</span> androidx.compose.foundation.lazy.items
+<span class="tok-kw">import</span> androidx.compose.material.icons.Icons
+<span class="tok-kw">import</span> androidx.compose.material.icons.automirrored.filled.ArrowBack
+<span class="tok-kw">import</span> androidx.compose.material.icons.automirrored.filled.ExitToApp
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.*
+<span class="tok-kw">import</span> androidx.compose.material3.*
+<span class="tok-kw">import</span> androidx.compose.runtime.*
+<span class="tok-kw">import</span> androidx.compose.ui.Alignment
+<span class="tok-kw">import</span> androidx.compose.ui.Modifier
+<span class="tok-kw">import</span> androidx.compose.ui.graphics.Color
+<span class="tok-kw">import</span> androidx.compose.ui.platform.LocalContext
+<span class="tok-kw">import</span> androidx.compose.ui.text.font.FontWeight
+<span class="tok-kw">import</span> androidx.compose.ui.text.style.TextAlign
+<span class="tok-kw">import</span> androidx.compose.ui.unit.dp
+<span class="tok-kw">import</span> androidx.compose.ui.unit.sp
+<span class="tok-kw">import</span> kotlinx.coroutines.delay
+
+<span class="tok-kw">data class</span> Student(<span class="tok-kw">val</span> id: Int, <span class="tok-kw">val</span> nim: String, <span class="tok-kw">val</span> name: String, <span class="tok-kw">val</span> major: String)
+
+<span class="tok-kw">val</span> majors = listOf(
+    <span class="tok-str">"Informatika"</span>, <span class="tok-str">"Sistem Informasi"</span>, <span class="tok-str">"Teknik Komputer"</span>,
+    <span class="tok-str">"Desain Komunikasi Visual"</span>, <span class="tok-str">"Manajemen"</span>, <span class="tok-str">"Akuntansi"</span>
+)
+
+<span class="tok-kw">class</span> MainActivity : ComponentActivity() {
+    <span class="tok-kw">override fun</span> onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent { MaterialTheme { StudentApp() } }
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> StudentApp() {
+    <span class="tok-kw">var</span> currentScreen by remember { mutableStateOf(<span class="tok-str">"splash"</span>) }
+    <span class="tok-kw">var</span> students by remember {
+        mutableStateOf(
+            listOf(
+                Student(1, <span class="tok-str">"2301001"</span>, <span class="tok-str">"Budi Santoso"</span>, <span class="tok-str">"Informatika"</span>),
+                Student(2, <span class="tok-str">"2301002"</span>, <span class="tok-str">"Siti Aminah"</span>, <span class="tok-str">"Sistem Informasi"</span>),
+                Student(3, <span class="tok-str">"2301003"</span>, <span class="tok-str">"Andi Wijaya"</span>, <span class="tok-str">"Teknik Komputer"</span>)
+            )
+        )
+    }
+    <span class="tok-kw">var</span> nextId by remember { mutableStateOf(4) }
+    <span class="tok-kw">var</span> studentToEdit by remember { mutableStateOf&lt;Student?&gt;(<span class="tok-kw">null</span>) }
+
+    when (currentScreen) {
+        <span class="tok-str">"splash"</span> -&gt; SplashScreen(onFinish = { currentScreen = <span class="tok-str">"home"</span> })
+        <span class="tok-str">"home"</span> -&gt; HomeScreen(
+            students = students,
+            onAdd = { 
+                studentToEdit = <span class="tok-kw">null</span>
+                currentScreen = <span class="tok-str">"form"</span> 
+            },
+            onEdit = { student -&gt;
+                studentToEdit = student
+                currentScreen = <span class="tok-str">"form"</span>
+            },
+            onDelete = { student -&gt;
+                students = students.filterNot { it.id == student.id }
+            },
+            onRefresh = { <span class="tok-cm">/* Aksi kosong */</span> }
+        )
+        <span class="tok-str">"form"</span> -&gt; FormScreen(
+            initial = studentToEdit,
+            existingStudents = students,
+            onBack = { currentScreen = <span class="tok-str">"home"</span> },
+            onSave = { nim, name, major -&gt;
+                <span class="tok-kw">if</span> (studentToEdit == <span class="tok-kw">null</span>) {
+                    students = students + Student(nextId++, nim, name, major)
+                } <span class="tok-kw">else</span> {
+                    students = students.map {
+                        <span class="tok-kw">if</span> (it.id == studentToEdit!!.id) it.copy(nim = nim, name = name, major = major) <span class="tok-kw">else</span> it
+                    }
+                }
+                currentScreen = <span class="tok-str">"home"</span>
+            }
+        )
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> SplashScreen(onFinish: () -&gt; Unit) {
+    LaunchedEffect(Unit) {
+        delay(1800)
+        onFinish()
+    }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(Icons.Default.School, contentDescription = <span class="tok-kw">null</span>, modifier = Modifier.size(88.dp), tint = Color(0xFF546E7A))
+        Spacer(Modifier.height(12.dp))
+        Text(<span class="tok-str">"Student Manager"</span>, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        Text(<span class="tok-str">"Kelola data mahasiswa dengan mudah"</span>, fontSize = 13.sp, color = Color.Gray)
+        Spacer(Modifier.height(24.dp))
+        CircularProgressIndicator()
+    }
+}
+
+<span class="tok-an">@OptIn</span>(ExperimentalMaterial3Api::class)
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> HomeScreen(
+    students: List&lt;Student&gt;,
+    onAdd: () -&gt; Unit,
+    onEdit: (Student) -&gt; Unit,
+    onDelete: (Student) -&gt; Unit,
+    onRefresh: () -&gt; Unit
+) {
+    <span class="tok-kw">var</span> query by remember { mutableStateOf(<span class="tok-str">""</span>) }
+    <span class="tok-kw">var</span> menuOpen by remember { mutableStateOf(<span class="tok-kw">false</span>) }
+    <span class="tok-kw">var</span> showAbout by remember { mutableStateOf(<span class="tok-kw">false</span>) }
+    <span class="tok-kw">var</span> studentToDelete by remember { mutableStateOf&lt;Student?&gt;(<span class="tok-kw">null</span>) }
+    <span class="tok-kw">val</span> activity = LocalContext.current <span class="tok-kw">as?</span> Activity
+
+    <span class="tok-kw">val</span> filteredStudents = <span class="tok-kw">if</span> (query.isBlank()) students <span class="tok-kw">else</span> students.filter {
+        it.name.contains(query, <span class="tok-kw">true</span>) || it.nim.contains(query, <span class="tok-kw">true</span>) || it.major.contains(query, <span class="tok-kw">true</span>)
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(<span class="tok-str">"Student Manager"</span>) },
+                actions = {
+                    IconButton(onClick = { menuOpen = <span class="tok-kw">true</span> }) { Icon(Icons.Default.MoreVert, <span class="tok-str">"Menu"</span>) }
+                    DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = <span class="tok-kw">false</span> }) {
+                        DropdownMenuItem(
+                            text = { Text(<span class="tok-str">"Refresh"</span>) },
+                            leadingIcon = { Icon(Icons.Default.Refresh, <span class="tok-kw">null</span>) },
+                            onClick = { query = <span class="tok-str">""</span>; menuOpen = <span class="tok-kw">false</span> }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(<span class="tok-str">"Tentang Aplikasi"</span>) },
+                            leadingIcon = { Icon(Icons.Default.Info, <span class="tok-kw">null</span>) },
+                            onClick = { showAbout = <span class="tok-kw">true</span>; menuOpen = <span class="tok-kw">false</span> }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(<span class="tok-str">"Keluar"</span>) },
+                            leadingIcon = { Icon(Icons.AutoMirrored.Filled.ExitToApp, <span class="tok-kw">null</span>) },
+                            onClick = { menuOpen = <span class="tok-kw">false</span>; activity?.finish() }
+                        )
+                    }
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = onAdd, containerColor = Color.Blue, contentColor = Color.White) { 
+                Icon(Icons.Default.Add, <span class="tok-str">"Tambah"</span>) 
+            }
+        }
+    ) { padding -&gt;
+        Column(Modifier.padding(padding).padding(horizontal = 16.dp)) {
+            OutlinedTextField(
+                value = query,
+                onValueChange = { query = it },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text(<span class="tok-str">"Cari mahasiswa..."</span>) },
+                leadingIcon = { Icon(Icons.Default.Search, <span class="tok-kw">null</span>) },
+                trailingIcon = {
+                    <span class="tok-kw">if</span> (query.isNotEmpty()) {
+                        IconButton(onClick = { query = <span class="tok-str">""</span> }) { Icon(Icons.Default.Clear, <span class="tok-str">"Hapus"</span>) }
+                    }
+                },
+                singleLine = <span class="tok-kw">true</span>
+            )
+            Spacer(Modifier.height(12.dp))
+            Text(<span class="tok-str">"Jumlah mahasiswa: ${filteredStudents.size}"</span>, fontSize = 13.sp, fontWeight = FontWeight.Medium)
+            Spacer(Modifier.height(8.dp))
+            
+            <span class="tok-kw">if</span> (filteredStudents.isEmpty()) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Icon(Icons.Default.School, <span class="tok-kw">null</span>, modifier = Modifier.size(72.dp), tint = Color.LightGray)
+                    Spacer(Modifier.height(12.dp))
+                    Text(
+                        <span class="tok-kw">if</span> (query.isNotEmpty()) <span class="tok-str">"Data tidak ditemukan"</span> <span class="tok-kw">else</span> <span class="tok-str">"Belum ada data mahasiswa"</span>,
+                        fontWeight = FontWeight.Bold
+                    )
+                    <span class="tok-kw">if</span> (query.isEmpty()) {
+                        Text(
+                            <span class="tok-str">"Tekan tombol + untuk menambahkan mahasiswa pertama."</span>,
+                            fontSize = 13.sp, color = Color.Gray, textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            } <span class="tok-kw">else</span> {
+                LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(filteredStudents, key = { it.id }) { student -&gt;
+                        Card(modifier = Modifier.fillMaxWidth()) {
+                            Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Person, <span class="tok-kw">null</span>, modifier = Modifier.size(40.dp), tint = Color.Gray)
+                                Spacer(Modifier.width(12.dp))
+                                Column(Modifier.weight(1f)) {
+                                    Text(student.name, fontWeight = FontWeight.Bold)
+                                    Text(<span class="tok-str">"NIM: ${student.nim}"</span>, fontSize = 12.sp, color = Color.Gray)
+                                    Text(student.major, fontSize = 12.sp, color = Color.Gray)
+                                }
+                                IconButton(onClick = { onEdit(student) }) { 
+                                    Icon(Icons.Default.Edit, <span class="tok-str">"Edit"</span>, modifier = Modifier.size(20.dp), tint = Color.Blue) 
+                                }
+                                IconButton(onClick = { studentToDelete = student }) {
+                                    Icon(Icons.Default.Delete, <span class="tok-str">"Hapus"</span>, tint = Color.Red, modifier = Modifier.size(20.dp))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    studentToDelete?.let { student -&gt;
+        AlertDialog(
+            onDismissRequest = { studentToDelete = <span class="tok-kw">null</span> },
+            icon = { Icon(Icons.Default.Delete, <span class="tok-kw">null</span>, tint = Color.Red) },
+            title = { Text(<span class="tok-str">"Hapus Mahasiswa?"</span>) },
+            text = { Text(<span class="tok-str">"Apakah Anda yakin ingin menghapus data ${student.name}?"</span>) },
+            confirmButton = {
+                Button(
+                    onClick = { onDelete(student); studentToDelete = <span class="tok-kw">null</span> },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                ) { Text(<span class="tok-str">"Hapus"</span>) }
+            },
+            dismissButton = { OutlinedButton(onClick = { studentToDelete = <span class="tok-kw">null</span> }) { Text(<span class="tok-str">"Batal"</span>) } }
+        )
+    }
+
+    <span class="tok-kw">if</span> (showAbout) {
+        AlertDialog(
+            onDismissRequest = { showAbout = <span class="tok-kw">false</span> },
+            title = { Text(<span class="tok-str">"Tentang Aplikasi"</span>) },
+            text = { Text(<span class="tok-str">"Student Manager v1.0\nAplikasi sederhana untuk mengelola data mahasiswa."</span>) },
+            confirmButton = { TextButton(onClick = { showAbout = <span class="tok-kw">false</span> }) { Text(<span class="tok-str">"Tutup"</span>) } }
+        )
+    }
+}
+
+<span class="tok-an">@OptIn</span>(ExperimentalMaterial3Api::class)
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> FormScreen(
+    initial: Student?,
+    existingStudents: List&lt;Student&gt;,
+    onBack: () -&gt; Unit,
+    onSave: (String, String, String) -&gt; Unit
+) {
+    <span class="tok-kw">var</span> nim by remember { mutableStateOf(initial?.nim ?: <span class="tok-str">""</span>) }
+    <span class="tok-kw">var</span> name by remember { mutableStateOf(initial?.name ?: <span class="tok-str">""</span>) }
+    <span class="tok-kw">var</span> major by remember { mutableStateOf(initial?.major ?: <span class="tok-str">""</span>) }
+    <span class="tok-kw">var</span> expanded by remember { mutableStateOf(<span class="tok-kw">false</span>) }
+    <span class="tok-kw">var</span> error by remember { mutableStateOf&lt;String?&gt;(<span class="tok-kw">null</span>) }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(<span class="tok-kw">if</span> (initial == <span class="tok-kw">null</span>) <span class="tok-str">"Tambah Mahasiswa"</span> <span class="tok-kw">else</span> <span class="tok-str">"Edit Mahasiswa"</span>) },
+                navigationIcon = {
+                    IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, <span class="tok-str">"Kembali"</span>) }
+                }
+            )
+        }
+    ) { padding -&gt;
+        Column(
+            Modifier.padding(padding).padding(16.dp).fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            OutlinedTextField(
+                value = nim,
+                onValueChange = { nim = it; error = <span class="tok-kw">null</span> },
+                label = { Text(<span class="tok-str">"NIM"</span>) },
+                placeholder = { Text(<span class="tok-str">"Masukkan NIM"</span>) },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = <span class="tok-kw">true</span>
+            )
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it; error = <span class="tok-kw">null</span> },
+                label = { Text(<span class="tok-str">"Nama"</span>) },
+                placeholder = { Text(<span class="tok-str">"Masukkan nama mahasiswa"</span>) },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = <span class="tok-kw">true</span>
+            )
+            ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = it }) {
+                OutlinedTextField(
+                    value = major,
+                    onValueChange = {},
+                    readOnly = <span class="tok-kw">true</span>,
+                    label = { Text(<span class="tok-str">"Program Studi"</span>) },
+                    placeholder = { Text(<span class="tok-str">"Pilih program studi"</span>) },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+                    modifier = Modifier.menuAnchor().fillMaxWidth()
+                )
+                ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = <span class="tok-kw">false</span> }) {
+                    majors.forEach { selection -&gt;
+                        DropdownMenuItem(
+                            text = { Text(selection) },
+                            onClick = { major = selection; expanded = <span class="tok-kw">false</span>; error = <span class="tok-kw">null</span> }
+                        )
+                    }
+                }
+            }
+            error?.let { Text(it, color = MaterialTheme.colorScheme.error, fontSize = 13.sp) }
+            
+            Spacer(Modifier.weight(1f))
+            
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                OutlinedButton(onClick = onBack, modifier = Modifier.weight(1f)) { Text(<span class="tok-str">"Batal"</span>) }
+                Button(
+                    onClick = {
+                        when {
+                            nim.isBlank() -&gt; error = <span class="tok-str">"NIM wajib diisi"</span>
+                            !nim.all { it.isDigit() } -&gt; error = <span class="tok-str">"NIM hanya boleh angka"</span>
+                            name.isBlank() -&gt; error = <span class="tok-str">"Nama wajib diisi"</span>
+                            major.isBlank() -&gt; error = <span class="tok-str">"Program studi wajib dipilih"</span>
+                            existingStudents.any { it.nim == nim &amp;&amp; it.id != initial?.id } -&gt; error = <span class="tok-str">"NIM sudah terdaftar"</span>
+                            <span class="tok-kw">else</span> -&gt; onSave(nim.trim(), name.trim(), major)
+                        }
+                    },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
+                ) { Text(<span class="tok-str">"Simpan"</span>) }
+            }
+        }
+    }
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas8-preview">
+      <h2>Preview</h2>
+      <div class="preview-frame">
+        <img src="tugas8-preview.png" alt="Preview aplikasi Student Manager menampilkan daftar mahasiswa beserta interaksinya di Android Studio">
+      </div>
+      <p class="preview-caption">StudentApp: pratinjau keseluruhan alur dan layout di Android Studio</p>
     </section>
   </div>
 
