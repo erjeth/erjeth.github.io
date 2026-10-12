@@ -35,7 +35,8 @@
     <a href="#tugas-5" data-tab="tugas-5">Tugas 5</a>
     <a href="#tugas-6" data-tab="tugas-6">Tugas 6</a>
     <a href="#tugas-7" data-tab="tugas-7">Tugas 7</a>
-    <a href="#tugas-8" data-tab="tugas-8">Kuis 1</a>
+    <a href="#kuis-1" data-tab="kuis-1">Kuis 1</a>
+    <a href="#tugas-8" data-tab="tugas-8">Tugas 8</a>
   </div>
 </div>
 
@@ -1255,18 +1256,18 @@
     </section>
   </div>
 
-  <div id="tugas-8">
+  <div id="kuis-1">
     <div class="task-divider reveal">
       <span class="task-num">Kuis 1</span>
       <h2 class="task-h">Student Manager</h2>
     </div>
 
-    <section class="block reveal" id="tugas8-ringkasan">
+    <section class="block reveal" id="kuis1-ringkasan">
       <h2>Ringkasan</h2>
       <p class="summary-text">Aplikasi pengelolaan data mahasiswa (Student Manager) yang dibangun sebagai Mini Project. Aplikasi ini mencakup fitur Splash Screen otomatis, daftar mahasiswa dengan pencarian (Search), form penambahan dan pengubahan data dengan Dropdown Menu, serta dialog konfirmasi penghapusan. Tampilan UI dibangun menggunakan <code>Scaffold</code>, <code>TopAppBar</code>, dan <code>FloatingActionButton</code> agar persis seperti wireframe, sementara datanya murni dikelola menggunakan <i>state lokal</i> (<code>remember { mutableStateOf() }</code>).</p>
     </section>
 
-    <section class="block reveal" id="tugas8-komponen">
+    <section class="block reveal" id="kuis1-komponen">
       <h2>Komponen yang digunakan</h2>
       <div class="component-grid">
         <div class="component-chip">
@@ -1288,7 +1289,7 @@
       </div>
     </section>
 
-    <section class="block reveal" id="tugas8-kode">
+    <section class="block reveal" id="kuis1-kode">
       <h2>Kode: MainActivity.kt</h2>
       <div class="code-wrap">
       <button class="copy-btn" type="button">Copy</button>
@@ -1631,7 +1632,7 @@
       </div>
     </section>
 
-    <section class="block reveal" id="tugas8-preview">
+    <section class="block reveal" id="kuis1-preview">
       <h2>Preview 1</h2>
       <div class="preview-frame">
         <img src="kuis1-preview1.png" alt="Preview aplikasi Student Manager menampilkan splash screen di Android Studio">
@@ -1694,6 +1695,207 @@
     </div>
     <a href="https://youtu.be/XEjkdLR9XCE" target="_blank" rel="noopener">Link Demo</a>
 </section>
+  </div>
+
+  <div id="tugas-8">
+    <div class="task-divider reveal">
+      <span class="task-num">Tugas 8</span>
+      <h2 class="task-h">Login Screen: Jetpack Compose</h2>
+    </div>
+
+    <section class="block reveal" id="tugas8-ringkasan">
+      <h2>Ringkasan</h2>
+      <p class="summary-text">Tampilan layar login sederhana dengan Jetpack Compose. Ada kolom email dan password, tombol Login, tautan Lupa Password, dan tiga ikon untuk login lewat Facebook, Google, atau Twitter. Semua tombol di sini baru berupa tampilan, onClick-nya masih kosong karena belum terhubung ke logika autentikasi.</p>
+    </section>
+
+    <section class="block reveal" id="tugas8-komponen">
+      <h2>Komponen yang digunakan</h2>
+      <div class="component-grid">
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Column</strong><span>Menyusun seluruh elemen layar login secara vertikal dan rata tengah.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>OutlinedTextField</strong><span>Kolom input untuk email dan password.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Image</strong><span>Menampilkan logo serta tiga ikon sosial lewat painterResource.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Button</strong><span>Memicu aksi login, saat ini onClick-nya masih kosong.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas8-kode">
+      <h2>Kode: MainActivity.kt</h2>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> np.com.bimalkafle.mylogin
+
+<span class="tok-kw">import</span> android.os.Bundle
+<span class="tok-kw">import</span> androidx.activity.ComponentActivity
+<span class="tok-kw">import</span> androidx.activity.compose.setContent
+<span class="tok-kw">import</span> androidx.compose.foundation.Image
+<span class="tok-kw">import</span> androidx.compose.foundation.clickable
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.*
+<span class="tok-kw">import</span> androidx.compose.material3.*
+<span class="tok-kw">import</span> androidx.compose.runtime.*
+<span class="tok-kw">import</span> androidx.compose.ui.Alignment
+<span class="tok-kw">import</span> androidx.compose.ui.Modifier
+<span class="tok-kw">import</span> androidx.compose.ui.text.font.FontWeight
+<span class="tok-kw">import</span> androidx.compose.ui.tooling.preview.Preview
+<span class="tok-kw">import</span> androidx.compose.ui.unit.dp
+<span class="tok-kw">import</span> androidx.compose.ui.unit.sp
+<span class="tok-kw">import</span> np.com.bimalkafle.mylogin.ui.theme.MyLoginTheme
+<span class="tok-kw">import</span> androidx.compose.ui.res.painterResource
+
+<span class="tok-kw">class</span> MainActivity : ComponentActivity() {
+    <span class="tok-kw">override fun</span> onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MyLoginTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    LoginScreen()
+                }
+            }
+        }
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> LoginScreen() {
+    <span class="tok-kw">var</span> email by remember { mutableStateOf(<span class="tok-str">""</span>) }
+    <span class="tok-kw">var</span> password by remember { mutableStateOf(<span class="tok-str">""</span>) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Image(
+            painter = painterResource(id = R.drawable.g),
+            contentDescription = <span class="tok-str">"Login image"</span>,
+            modifier = Modifier.size(160.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = <span class="tok-str">"Welcome Back"</span>,
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = <span class="tok-str">"Login to your account"</span>,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text(text = <span class="tok-str">"Email address"</span>) },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text(text = <span class="tok-str">"Password"</span>) },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Button(
+            onClick = {  },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+        ) {
+            Text(text = <span class="tok-str">"Login"</span>, fontSize = 16.sp)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = <span class="tok-str">"Forgot Password?"</span>,
+            modifier = Modifier.clickable {
+            },
+            color = MaterialTheme.colorScheme.primary
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(text = <span class="tok-str">"Or sign in with"</span>)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 40.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.fb),
+                contentDescription = <span class="tok-str">"Facebook"</span>,
+                modifier = Modifier
+                    .size(50.dp)
+                    .clickable {  }
+            )
+            Image(
+                painter = painterResource(id = R.drawable.google),
+                contentDescription = <span class="tok-str">"Google"</span>,
+                modifier = Modifier
+                    .size(50.dp)
+                    .clickable {  }
+            )
+            Image(
+                painter = painterResource(id = R.drawable.twitter),
+                contentDescription = <span class="tok-str">"Twitter"</span>,
+                modifier = Modifier
+                    .size(50.dp)
+                    .clickable {  }
+            )
+        }
+    }
+}
+
+<span class="tok-an">@Preview</span>(showBackground = <span class="tok-kw">true</span>)
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> LoginScreenPreview() {
+    MyLoginTheme {
+        LoginScreen()
+    }
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas8-preview">
+      <h2>Preview</h2>
+      <div class="preview-frame">
+        <img src="tugas8-preview.png" alt="Preview aplikasi MyLogin menampilkan layar login di Android Studio">
+      </div>
+      <p class="preview-caption">LoginScreenPreview: pratinjau layar login di Android Studio</p>
+    </section>
   </div>
 
   <footer>
