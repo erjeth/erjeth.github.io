@@ -37,6 +37,7 @@
     <a href="#tugas-7" data-tab="tugas-7">Tugas 7</a>
     <a href="#kuis-1" data-tab="kuis-1">Kuis 1</a>
     <a href="#tugas-8" data-tab="tugas-8">Tugas 8</a>
+    <a href="#ets" data-tab="ets">ETS</a>
   </div>
 </div>
 
@@ -1895,6 +1896,997 @@
         <img src="tugas8-preview.png" alt="Preview aplikasi MyLogin menampilkan layar login di Android Studio">
       </div>
       <p class="preview-caption">LoginScreenPreview: pratinjau layar login di Android Studio</p>
+    </section>
+  </div>
+
+
+  <div id="ets">
+    <div class="task-divider reveal">
+      <span class="task-num">ETS</span>
+      <h2 class="task-h">LibraryReg: Aplikasi Pendaftaran Anggota Perpustakaan</h2>
+    </div>
+
+    <section class="block reveal" id="ets-deskripsi">
+      <h2>Deskripsi sistem</h2>
+      <p class="summary-text">Sebuah perpustakaan perguruan tinggi masih melakukan pendaftaran anggota secara manual menggunakan formulir kertas. Proses tersebut menimbulkan beberapa kendala, seperti antrean pendaftaran, kesalahan pencatatan data, kesulitan mencari informasi anggota, dan lambatnya pembuatan kartu anggota.</p>
+      <p class="summary-text">Untuk mengatasi masalah tersebut, dibangun aplikasi Android bernama LibraryReg, aplikasi pendaftaran anggota perpustakaan yang memungkinkan calon anggota mengisi formulir pendaftaran melalui smartphone. Petugas juga dapat melihat daftar anggota yang telah terdaftar, mencari anggota berdasarkan nama atau nomor induk, serta mengubah dan menghapus data sesuai kebutuhan.</p>
+    </section>
+
+    <section class="block reveal" id="ets-ruang-lingkup">
+      <h2>Ruang lingkup aplikasi</h2>
+      <div class="component-grid">
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Formulir pendaftaran</strong><span>Calon anggota mengisi nama lengkap, NIM/NIP, program studi, alamat, nomor telepon, email, dan jenis keanggotaan (Mahasiswa, Dosen, Umum).</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Validasi data</strong><span>Mengecek kolom wajib, format email, format nomor telepon, dan NIM/NRP yang sudah terdaftar sebelum data disimpan.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Manajemen anggota</strong><span>Menampilkan daftar anggota, melihat detail, mencari berdasarkan nama atau NIM, mengedit, dan menghapus data dengan dialog konfirmasi.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Statistik ringkas</strong><span>Menampilkan jumlah total anggota serta rincian per jenis keanggotaan (Mahasiswa, Dosen, Umum) di bagian atas layar.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Penyimpanan lokal</strong><span>Data anggota disimpan di perangkat lewat SharedPreferences dalam format JSON, sehingga tetap ada saat aplikasi ditutup dan dibuka kembali.</span></div>
+        </div>
+      </div>
+      <p class="summary-text">Di luar ruang lingkup: aplikasi ini belum terhubung ke server atau basis data pusat, tidak ada autentikasi petugas, dan belum mencetak kartu anggota fisik.</p>
+    </section>
+
+    <section class="block reveal" id="ets-komponen">
+      <h2>Komponen yang digunakan</h2>
+      <div class="component-grid">
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Scaffold &amp; FloatingActionButton</strong><span>Kerangka layar utama dengan tombol tambah anggota mengambang.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>LazyColumn &amp; Card</strong><span>Menampilkan daftar anggota secara efisien dalam bentuk kartu.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Dialog &amp; AlertDialog</strong><span>Form pendaftaran/edit anggota, detail anggota, serta konfirmasi hapus data.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>OutlinedTextField &amp; DropdownMenu</strong><span>Input data anggota dan pemilihan jenis keanggotaan.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>SharedPreferences + JSON</strong><span>Menyimpan dan memuat data anggota secara lokal lewat JSONArray/JSONObject.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>State (remember / mutableStateListOf)</strong><span>Menyimpan daftar anggota, kata kunci pencarian, dan status dialog yang sedang terbuka.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block reveal" id="ets-kode">
+      <h2>Kode: MainActivity.kt</h2>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.libraryreg
+
+<span class="tok-kw">import</span> android.content.Context
+<span class="tok-kw">import</span> android.os.Bundle
+<span class="tok-kw">import</span> org.json.JSONArray
+<span class="tok-kw">import</span> org.json.JSONObject
+<span class="tok-kw">import</span> androidx.activity.ComponentActivity
+<span class="tok-kw">import</span> androidx.activity.compose.setContent
+<span class="tok-kw">import</span> androidx.compose.foundation.background
+<span class="tok-kw">import</span> androidx.compose.foundation.clickable
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.*
+<span class="tok-kw">import</span> androidx.compose.foundation.lazy.LazyColumn
+<span class="tok-kw">import</span> androidx.compose.foundation.lazy.items
+<span class="tok-kw">import</span> androidx.compose.foundation.rememberScrollState
+<span class="tok-kw">import</span> androidx.compose.foundation.shape.CircleShape
+<span class="tok-kw">import</span> androidx.compose.foundation.shape.RoundedCornerShape
+<span class="tok-kw">import</span> androidx.compose.foundation.verticalScroll
+<span class="tok-kw">import</span> androidx.compose.material.icons.Icons
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.Add
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.ArrowBack
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.Book
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.CheckCircle
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.Delete
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.Edit
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.Email
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.LocationOn
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.People
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.Person
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.Phone
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.Search
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.School
+<span class="tok-kw">import</span> androidx.compose.material.icons.filled.Close
+<span class="tok-kw">import</span> androidx.compose.material3.*
+<span class="tok-kw">import</span> androidx.compose.runtime.*
+<span class="tok-kw">import</span> androidx.compose.ui.Alignment
+<span class="tok-kw">import</span> androidx.compose.ui.Modifier
+<span class="tok-kw">import</span> androidx.compose.ui.draw.clip
+<span class="tok-kw">import</span> androidx.compose.ui.graphics.Color
+<span class="tok-kw">import</span> androidx.compose.ui.text.font.FontWeight
+<span class="tok-kw">import</span> androidx.compose.ui.text.input.KeyboardType
+<span class="tok-kw">import</span> androidx.compose.foundation.text.KeyboardOptions
+<span class="tok-kw">import</span> androidx.compose.ui.text.style.TextOverflow
+<span class="tok-kw">import</span> androidx.compose.ui.unit.dp
+<span class="tok-kw">import</span> androidx.compose.ui.unit.sp
+<span class="tok-kw">import</span> androidx.compose.ui.window.Dialog
+<span class="tok-kw">import</span> androidx.compose.ui.window.DialogProperties
+<span class="tok-kw">import</span> kotlinx.coroutines.launch
+<span class="tok-kw">import</span> androidx.compose.ui.tooling.preview.Preview
+
+<span class="tok-kw">private</span> <span class="tok-kw">val</span> Blue = Color(0xFF0866D5)
+<span class="tok-kw">private</span> <span class="tok-kw">val</span> DarkBlue = Color(0xFF073B82)
+<span class="tok-kw">private</span> <span class="tok-kw">val</span> PaleBlue = Color(0xFFF0F7FF)
+<span class="tok-kw">private</span> <span class="tok-kw">val</span> BorderBlue = Color(0xFFD9E8FA)
+<span class="tok-kw">private</span> <span class="tok-kw">val</span> TextDark = Color(0xFF17365D)
+<span class="tok-kw">private</span> <span class="tok-kw">val</span> TextMuted = Color(0xFF7186A5)
+<span class="tok-kw">private</span> <span class="tok-kw">val</span> Green = Color(0xFF159D69)
+<span class="tok-kw">private</span> <span class="tok-kw">val</span> Red = Color(0xFFE5484D)
+
+<span class="tok-kw">data</span> <span class="tok-kw">class</span> Anggota(
+    <span class="tok-kw">val</span> nama: String,
+    <span class="tok-kw">val</span> nim: String,
+    <span class="tok-kw">val</span> prodi: String,
+    <span class="tok-kw">val</span> alamat: String,
+    <span class="tok-kw">val</span> telepon: String,
+    <span class="tok-kw">val</span> email: String,
+    <span class="tok-kw">val</span> jenis: String
+)
+
+<span class="tok-kw">class</span> MainActivity : ComponentActivity() {
+    <span class="tok-kw">override</span> <span class="tok-kw">fun</span> onCreate(savedInstanceState: Bundle?) {
+        <span class="tok-kw">super</span>.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme(
+                colorScheme = lightColorScheme(
+                    primary = Blue,
+                    secondary = DarkBlue,
+                    background = PaleBlue,
+                    surface = Color.White
+                )
+            ) {
+                LibraryRegApp(applicationContext)
+            }
+        }
+    }
+}
+
+<span class="tok-kw">private</span> <span class="tok-kw">fun</span> loadAnggota(context: Context): List&lt;Anggota&gt; {
+    <span class="tok-kw">return</span> <span class="tok-kw">try</span> {
+        <span class="tok-kw">val</span> raw = context.getSharedPreferences(
+            <span class="tok-str">&quot;libraryreg&quot;</span>, Context.MODE_PRIVATE
+        ).getString(<span class="tok-str">&quot;anggota&quot;</span>, <span class="tok-str">&quot;[]&quot;</span>) ?: <span class="tok-str">&quot;[]&quot;</span>
+
+        <span class="tok-kw">val</span> json = JSONArray(raw)
+        (0 until json.length()).map { i -&gt;
+            <span class="tok-kw">val</span> item = json.getJSONObject(i)
+            Anggota(
+                nama = item.optString(<span class="tok-str">&quot;nama&quot;</span>),
+                nim = item.optString(<span class="tok-str">&quot;nim&quot;</span>),
+                prodi = item.optString(<span class="tok-str">&quot;prodi&quot;</span>),
+                alamat = item.optString(<span class="tok-str">&quot;alamat&quot;</span>),
+                telepon = item.optString(<span class="tok-str">&quot;telepon&quot;</span>),
+                email = item.optString(<span class="tok-str">&quot;email&quot;</span>),
+                jenis = item.optString(<span class="tok-str">&quot;jenis&quot;</span>, <span class="tok-str">&quot;Mahasiswa&quot;</span>)
+            )
+        }
+    } <span class="tok-kw">catch</span> (_: Exception) {
+        emptyList()
+    }
+}
+
+<span class="tok-kw">private</span> <span class="tok-kw">fun</span> saveAnggota(context: Context, <span class="tok-kw">data</span>: List&lt;Anggota&gt;) {
+    <span class="tok-kw">val</span> json = JSONArray()
+    <span class="tok-kw">data</span>.forEach { a -&gt;
+        json.put(
+            JSONObject().apply {
+                put(<span class="tok-str">&quot;nama&quot;</span>, a.nama)
+                put(<span class="tok-str">&quot;nim&quot;</span>, a.nim)
+                put(<span class="tok-str">&quot;prodi&quot;</span>, a.prodi)
+                put(<span class="tok-str">&quot;alamat&quot;</span>, a.alamat)
+                put(<span class="tok-str">&quot;telepon&quot;</span>, a.telepon)
+                put(<span class="tok-str">&quot;email&quot;</span>, a.email)
+                put(<span class="tok-str">&quot;jenis&quot;</span>, a.jenis)
+            }
+        )
+    }
+
+    context.getSharedPreferences(<span class="tok-str">&quot;libraryreg&quot;</span>, Context.MODE_PRIVATE)
+        .edit()
+        .putString(<span class="tok-str">&quot;anggota&quot;</span>, json.toString())
+        .apply()
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> LibraryRegApp(context: Context, dataAwal: List&lt;Anggota&gt;? = <span class="tok-kw">null</span>) {
+    <span class="tok-kw">val</span> anggota = remember {
+        mutableStateListOf&lt;Anggota&gt;().apply {
+            addAll(dataAwal ?: loadAnggota(context))
+        }
+    }
+
+    <span class="tok-kw">var</span> pencarian <span class="tok-kw">by</span> remember { mutableStateOf(<span class="tok-str">&quot;&quot;</span>) }
+    <span class="tok-kw">var</span> tampilForm <span class="tok-kw">by</span> remember { mutableStateOf(<span class="tok-kw">false</span>) }
+    <span class="tok-kw">var</span> anggotaEdit <span class="tok-kw">by</span> remember { mutableStateOf&lt;Anggota?&gt;(<span class="tok-kw">null</span>) }
+    <span class="tok-kw">var</span> anggotaDetail <span class="tok-kw">by</span> remember { mutableStateOf&lt;Anggota?&gt;(<span class="tok-kw">null</span>) }
+    <span class="tok-kw">var</span> anggotaHapus <span class="tok-kw">by</span> remember { mutableStateOf&lt;Anggota?&gt;(<span class="tok-kw">null</span>) }
+    <span class="tok-kw">val</span> snackbar = remember { SnackbarHostState() }
+    <span class="tok-kw">val</span> scope = rememberCoroutineScope()
+
+    <span class="tok-kw">val</span> hasilPencarian = anggota.filter {
+        it.nama.contains(pencarian, ignoreCase = <span class="tok-kw">true</span>) ||
+                it.nim.contains(pencarian, ignoreCase = <span class="tok-kw">true</span>)
+    }
+
+    <span class="tok-kw">fun</span> beriPesan(teks: String) {
+        scope.launch { snackbar.showSnackbar(teks) }
+    }
+
+    Scaffold(
+        containerColor = PaleBlue,
+        snackbarHost = { SnackbarHost(snackbar) },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    anggotaEdit = <span class="tok-kw">null</span>
+                    tampilForm = <span class="tok-kw">true</span>
+                },
+                containerColor = Blue,
+                contentColor = Color.White,
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = <span class="tok-str">&quot;Tambah anggota&quot;</span>
+                )
+            }
+        }
+    ) { padding -&gt;
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        Blue,
+                        RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp)
+                    )
+                    .padding(start = 22.dp, end = 22.dp, top = 18.dp, bottom = 42.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clip(RoundedCornerShape(15.dp))
+                            .background(Color.White.copy(alpha = 0.18f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            Icons.Default.Book,
+                            contentDescription = <span class="tok-kw">null</span>,
+                            tint = Color.White,
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
+                    Spacer(Modifier.width(12.dp))
+                    Column {
+                        Text(
+                            <span class="tok-str">&quot;LibraryReg&quot;</span>,
+                            color = Color.White,
+                            fontSize = 25.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            <span class="tok-str">&quot;Pendaftaran Anggota Perpustakaan&quot;</span>,
+                            color = Color.White.copy(alpha = 0.88f),
+                            fontSize = 12.sp
+                        )
+                    }
+                }
+            }
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .offset(y = (-27).dp),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    StatItem(<span class="tok-str">&quot;Total&quot;</span>, anggota.size, Blue, Icons.Default.People)
+                    StatItem(
+                        <span class="tok-str">&quot;Mahasiswa&quot;</span>,
+                        anggota.count { it.jenis == <span class="tok-str">&quot;Mahasiswa&quot;</span> },
+                        Color(0xFF119E72),
+                        Icons.Default.School
+                    )
+                    StatItem(
+                        <span class="tok-str">&quot;Dosen&quot;</span>,
+                        anggota.count { it.jenis == <span class="tok-str">&quot;Dosen&quot;</span> },
+                        Color(0xFF7650D8),
+                        Icons.Default.Person
+                    )
+                    StatItem(
+                        <span class="tok-str">&quot;Umum&quot;</span>,
+                        anggota.count { it.jenis == <span class="tok-str">&quot;Umum&quot;</span> },
+                        Color(0xFFED941C),
+                        Icons.Default.People
+                    )
+                }
+            }
+
+            OutlinedTextField(
+                value = pencarian,
+                onValueChange = { pencarian = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 18.dp)
+                    .offset(y = (-12).dp),
+                placeholder = {
+                    Text(<span class="tok-str">&quot;Cari nama atau NIM/NRP...&quot;</span>, color = TextMuted)
+                },
+                leadingIcon = {
+                    Icon(Icons.Default.Search, contentDescription = <span class="tok-kw">null</span>, tint = Blue)
+                },
+                trailingIcon = {
+                    <span class="tok-kw">if</span> (pencarian.isNotEmpty()) {
+                        IconButton(onClick = { pencarian = <span class="tok-str">&quot;&quot;</span> }) {
+                            Icon(Icons.Default.Close, contentDescription = <span class="tok-str">&quot;Hapus pencarian&quot;</span>)
+                        }
+                    }
+                },
+                singleLine = <span class="tok-kw">true</span>,
+                shape = RoundedCornerShape(16.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedContainerColor = Color.White,
+                    focusedContainerColor = Color.White,
+                    unfocusedBorderColor = BorderBlue,
+                    focusedBorderColor = Blue
+                )
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 22.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    <span class="tok-str">&quot;Daftar Anggota&quot;</span>,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = DarkBlue
+                )
+                Spacer(Modifier.weight(1f))
+                Text(<span class="tok-str">&quot;${hasilPencarian.size} anggota&quot;</span>, color = TextMuted, fontSize = 12.sp)
+            }
+
+            <span class="tok-kw">if</span> (hasilPencarian.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(24.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            Icons.Default.People,
+                            contentDescription = <span class="tok-kw">null</span>,
+                            tint = BorderBlue,
+                            modifier = Modifier.size(64.dp)
+                        )
+                        Spacer(Modifier.height(12.dp))
+                        Text(
+                            <span class="tok-kw">if</span> (pencarian.isBlank()) <span class="tok-str">&quot;Belum ada anggota&quot;</span> <span class="tok-kw">else</span> <span class="tok-str">&quot;Anggota tidak ditemukan&quot;</span>,
+                            fontWeight = FontWeight.SemiBold,
+                            color = TextDark
+                        )
+                        Text(
+                            <span class="tok-kw">if</span> (pencarian.isBlank())
+                                <span class="tok-str">&quot;Tekan tombol + untuk mendaftarkan anggota.&quot;</span>
+                            <span class="tok-kw">else</span> <span class="tok-str">&quot;Coba kata kunci yang berbeda.&quot;</span>,
+                            color = TextMuted,
+                            fontSize = 13.sp
+                        )
+                    }
+                }
+            } <span class="tok-kw">else</span> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    contentPadding = PaddingValues(
+                        start = 16.dp, end = 16.dp, top = 4.dp, bottom = 96.dp
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(hasilPencarian, key = { it.nim }) { a -&gt;
+                        KartuAnggota(
+                            anggota = a,
+                            onClick = { anggotaDetail = a },
+                            onEdit = {
+                                anggotaEdit = a
+                                tampilForm = <span class="tok-kw">true</span>
+                            },
+                            onDelete = { anggotaHapus = a }
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    <span class="tok-kw">if</span> (tampilForm) {
+        FormAnggotaDialog(
+            anggotaAwal = anggotaEdit,
+            daftar = anggota.toList(),
+            onTutup = {
+                tampilForm = <span class="tok-kw">false</span>
+                anggotaEdit = <span class="tok-kw">null</span>
+            },
+            onSimpan = { <span class="tok-kw">data</span> -&gt;
+                <span class="tok-kw">val</span> lama = anggotaEdit
+
+                <span class="tok-kw">if</span> (lama == <span class="tok-kw">null</span>) {
+                    anggota.add(<span class="tok-kw">data</span>)
+                } <span class="tok-kw">else</span> {
+                    <span class="tok-kw">val</span> index = anggota.indexOf(lama)
+                    <span class="tok-kw">if</span> (index &gt;= 0) {
+                        anggota[index] = <span class="tok-kw">data</span>
+                    }
+                }
+
+                saveAnggota(context, anggota.toList())
+                tampilForm = <span class="tok-kw">false</span>
+                anggotaEdit = <span class="tok-kw">null</span>
+            }
+        )
+    }
+
+    anggotaDetail?.let { a -&gt;
+        DetailAnggotaDialog(
+            anggota = a,
+            onTutup = { anggotaDetail = <span class="tok-kw">null</span> },
+            onEdit = {
+                anggotaEdit = a
+                anggotaDetail = <span class="tok-kw">null</span>
+                tampilForm = <span class="tok-kw">true</span>
+            }
+        )
+    }
+
+    anggotaHapus?.let { a -&gt;
+        AlertDialog(
+            onDismissRequest = { anggotaHapus = <span class="tok-kw">null</span> },
+            icon = {
+                Icon(Icons.Default.Delete, contentDescription = <span class="tok-kw">null</span>, tint = Red)
+            },
+            title = { Text(<span class="tok-str">&quot;Hapus Anggota&quot;</span>, fontWeight = FontWeight.Bold) },
+            text = { Text(<span class="tok-str">&quot;Yakin ingin menghapus data ${a.nama}? Tindakan ini tidak dapat dibatalkan.&quot;</span>) },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        anggota.remove(a)
+                        saveAnggota(context, anggota.toList())
+                        anggotaHapus = <span class="tok-kw">null</span>
+
+                        <span class="tok-kw">if</span> (anggotaDetail?.nim == a.nim) {
+                            anggotaDetail = <span class="tok-kw">null</span>
+                        }
+
+                        beriPesan(<span class="tok-str">&quot;Anggota berhasil dihapus.&quot;</span>)
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Red)
+                ) {
+                    Text(<span class="tok-str">&quot;Hapus&quot;</span>)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { anggotaHapus = <span class="tok-kw">null</span> }) {
+                    Text(<span class="tok-str">&quot;Batal&quot;</span>)
+                }
+            },
+            containerColor = Color.White
+        )
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">private</span> <span class="tok-kw">fun</span> RowScope.StatItem(
+    label: String,
+    jumlah: Int,
+    warna: Color,
+    ikon: androidx.compose.ui.graphics.vector.ImageVector
+) {
+    Column(
+        modifier = Modifier
+            .weight(1f)
+            .padding(vertical = 14.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .size(38.dp)
+                .clip(CircleShape)
+                .background(warna.copy(alpha = 0.12f)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(ikon, contentDescription = <span class="tok-kw">null</span>, tint = warna, modifier = Modifier.size(21.dp))
+        }
+        Spacer(Modifier.height(5.dp))
+        Text(<span class="tok-str">&quot;$jumlah&quot;</span>, fontSize = 19.sp, fontWeight = FontWeight.Bold, color = TextDark)
+        Text(label, fontSize = 10.sp, color = TextMuted, maxLines = 1)
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">private</span> <span class="tok-kw">fun</span> KartuAnggota(
+    anggota: Anggota,
+    onClick: () -&gt; Unit,
+    onEdit: () -&gt; Unit,
+    onDelete: () -&gt; Unit
+) {
+    <span class="tok-kw">val</span> warna = <span class="tok-kw">when</span> (anggota.jenis) {
+        <span class="tok-str">&quot;Mahasiswa&quot;</span> -&gt; Blue
+        <span class="tok-str">&quot;Dosen&quot;</span> -&gt; Color(0xFF7650D8)
+        <span class="tok-kw">else</span> -&gt; Color(0xFFED941C)
+    }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        shape = RoundedCornerShape(18.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(13.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .background(warna),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    anggota.nama.firstOrNull()?.uppercase() ?: <span class="tok-str">&quot;?&quot;</span>,
+                    color = Color.White,
+                    fontSize = 21.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(Modifier.width(12.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    anggota.nama,
+                    fontWeight = FontWeight.Bold,
+                    color = TextDark,
+                    fontSize = 15.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(Modifier.height(3.dp))
+                Text(<span class="tok-str">&quot;${anggota.nim} • ${anggota.jenis}&quot;</span>, color = TextMuted, fontSize = 12.sp)
+                Text(
+                    anggota.prodi.ifBlank { <span class="tok-str">&quot;Program studi belum diisi&quot;</span> },
+                    color = TextMuted,
+                    fontSize = 12.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Row {
+                    TextButton(
+                        onClick = onEdit,
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
+                    ) {
+                        Icon(Icons.Default.Edit, <span class="tok-kw">null</span>, modifier = Modifier.size(15.dp))
+                        Spacer(Modifier.width(4.dp))
+                        Text(<span class="tok-str">&quot;Edit&quot;</span>, fontSize = 12.sp)
+                    }
+                    Spacer(Modifier.width(10.dp))
+                    TextButton(
+                        onClick = onDelete,
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Delete,
+                            <span class="tok-kw">null</span>,
+                            tint = Red,
+                            modifier = Modifier.size(15.dp)
+                        )
+                        Spacer(Modifier.width(4.dp))
+                        Text(<span class="tok-str">&quot;Hapus&quot;</span>, color = Red, fontSize = 12.sp)
+                    }
+                }
+            }
+
+            Icon(
+                Icons.Default.ArrowBack,
+                contentDescription = <span class="tok-str">&quot;Lihat detail&quot;</span>,
+                tint = TextMuted,
+                modifier = Modifier
+                    .size(18.dp)
+                    .clickable { onClick() }
+            )
+        }
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">private</span> <span class="tok-kw">fun</span> FormAnggotaDialog(
+    anggotaAwal: Anggota?,
+    daftar: List&lt;Anggota&gt;,
+    onTutup: () -&gt; Unit,
+    onSimpan: (Anggota) -&gt; Unit
+) {
+    <span class="tok-kw">var</span> nama <span class="tok-kw">by</span> remember(anggotaAwal) { mutableStateOf(anggotaAwal?.nama ?: <span class="tok-str">&quot;&quot;</span>) }
+    <span class="tok-kw">var</span> nim <span class="tok-kw">by</span> remember(anggotaAwal) { mutableStateOf(anggotaAwal?.nim ?: <span class="tok-str">&quot;&quot;</span>) }
+    <span class="tok-kw">var</span> prodi <span class="tok-kw">by</span> remember(anggotaAwal) { mutableStateOf(anggotaAwal?.prodi ?: <span class="tok-str">&quot;&quot;</span>) }
+    <span class="tok-kw">var</span> alamat <span class="tok-kw">by</span> remember(anggotaAwal) { mutableStateOf(anggotaAwal?.alamat ?: <span class="tok-str">&quot;&quot;</span>) }
+    <span class="tok-kw">var</span> telepon <span class="tok-kw">by</span> remember(anggotaAwal) { mutableStateOf(anggotaAwal?.telepon ?: <span class="tok-str">&quot;&quot;</span>) }
+    <span class="tok-kw">var</span> email <span class="tok-kw">by</span> remember(anggotaAwal) { mutableStateOf(anggotaAwal?.email ?: <span class="tok-str">&quot;&quot;</span>) }
+    <span class="tok-kw">var</span> jenis <span class="tok-kw">by</span> remember(anggotaAwal) {
+        mutableStateOf(anggotaAwal?.jenis ?: <span class="tok-str">&quot;Mahasiswa&quot;</span>)
+    }
+    <span class="tok-kw">var</span> error <span class="tok-kw">by</span> remember { mutableStateOf(<span class="tok-str">&quot;&quot;</span>) }
+    <span class="tok-kw">var</span> dropdown <span class="tok-kw">by</span> remember { mutableStateOf(<span class="tok-kw">false</span>) }
+
+    Dialog(
+        onDismissRequest = onTutup,
+        properties = DialogProperties(usePlatformDefaultWidth = <span class="tok-kw">false</span>)
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 12.dp)
+                .heightIn(max = 720.dp),
+            shape = RoundedCornerShape(26.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White)
+        ) {
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(22.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            <span class="tok-kw">if</span> (anggotaAwal == <span class="tok-kw">null</span>) <span class="tok-str">&quot;Pendaftaran Anggota&quot;</span> <span class="tok-kw">else</span> <span class="tok-str">&quot;Edit Anggota&quot;</span>,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = DarkBlue
+                        )
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            <span class="tok-str">&quot;Isi data dengan lengkap dan benar&quot;</span>,
+                            color = TextMuted,
+                            fontSize = 12.sp
+                        )
+                    }
+                    Icon(
+                        Icons.Default.Book,
+                        contentDescription = <span class="tok-kw">null</span>,
+                        tint = Blue,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
+
+                Spacer(Modifier.height(18.dp))
+
+                InputAnggota(<span class="tok-str">&quot;Nama Lengkap&quot;</span>, nama, { nama = it }, <span class="tok-str">&quot;Masukkan nama lengkap&quot;</span>)
+                InputAnggota(
+                    <span class="tok-str">&quot;NIM/NRP&quot;</span>, nim, { nim = it }, <span class="tok-str">&quot;Masukkan NIM atau NRP&quot;</span>,
+                    keyboardType = KeyboardType.Text
+                )
+                InputAnggota(<span class="tok-str">&quot;Program Studi&quot;</span>, prodi, { prodi = it }, <span class="tok-str">&quot;Masukkan program studi&quot;</span>)
+                InputAnggota(<span class="tok-str">&quot;Alamat&quot;</span>, alamat, { alamat = it }, <span class="tok-str">&quot;Masukkan alamat lengkap&quot;</span>)
+                InputAnggota(
+                    <span class="tok-str">&quot;Nomor Telepon&quot;</span>, telepon, { telepon = it }, <span class="tok-str">&quot;Contoh: 081234567890&quot;</span>,
+                    keyboardType = KeyboardType.Phone
+                )
+                InputAnggota(
+                    <span class="tok-str">&quot;Email&quot;</span>, email, { email = it }, <span class="tok-str">&quot;nama@email.com&quot;</span>,
+                    keyboardType = KeyboardType.Email
+                )
+
+                Text(<span class="tok-str">&quot;Jenis Keanggotaan&quot;</span>, fontWeight = FontWeight.Medium, color = TextDark)
+                Spacer(Modifier.height(6.dp))
+                Box {
+                    OutlinedButton(
+                        onClick = { dropdown = <span class="tok-kw">true</span> },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(13.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = DarkBlue)
+                    ) {
+                        Icon(Icons.Default.People, <span class="tok-kw">null</span>, tint = Blue)
+                        Spacer(Modifier.width(8.dp))
+                        Text(jenis)
+                        Spacer(modifier = Modifier.weight(1f))
+                        Text(<span class="tok-str">&quot;⌄&quot;</span>, fontSize = 18.sp)
+                    }
+                    DropdownMenu(
+                        expanded = dropdown,
+                        onDismissRequest = { dropdown = <span class="tok-kw">false</span> }
+                    ) {
+                        listOf(<span class="tok-str">&quot;Mahasiswa&quot;</span>, <span class="tok-str">&quot;Dosen&quot;</span>, <span class="tok-str">&quot;Umum&quot;</span>).forEach { pilihan -&gt;
+                            DropdownMenuItem(
+                                text = { Text(pilihan) },
+                                onClick = {
+                                    jenis = pilihan
+                                    dropdown = <span class="tok-kw">false</span>
+                                }
+                            )
+                        }
+                    }
+                }
+
+                <span class="tok-kw">if</span> (error.isNotBlank()) {
+                    Spacer(Modifier.height(10.dp))
+                    Text(error, color = Red, fontSize = 12.sp)
+                }
+
+                Spacer(Modifier.height(20.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    OutlinedButton(
+                        onClick = onTutup,
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(50)
+                    ) {
+                        Text(<span class="tok-str">&quot;Batal&quot;</span>)
+                    }
+                    Button(
+                        onClick = {
+                            <span class="tok-kw">when</span> {
+                                listOf(nama, nim, prodi, alamat, telepon, email)
+                                    .any { it.isBlank() } -&gt;
+                                    error = <span class="tok-str">&quot;Semua kolom wajib diisi.&quot;</span>
+                                !android.util.Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches() -&gt;
+                                    error = <span class="tok-str">&quot;Format email tidak valid.&quot;</span>
+                                !telepon.trim().matches(Regex(<span class="tok-str">&quot;[0-9+() -]{8,20}&quot;</span>)) -&gt;
+                                    error = <span class="tok-str">&quot;Nomor telepon tidak valid.&quot;</span>
+                                daftar.any {
+                                    it.nim.equals(nim.trim(), ignoreCase = <span class="tok-kw">true</span>) &amp;&amp;
+                                            !it.nim.equals(
+                                                anggotaAwal?.nim,
+                                                ignoreCase = <span class="tok-kw">true</span>
+                                            )
+                                } -&gt; error = <span class="tok-str">&quot;NIM/NRP sudah digunakan anggota lain.&quot;</span>
+                                <span class="tok-kw">else</span> -&gt; onSimpan(
+                                    Anggota(
+                                        nama.trim(), nim.trim(), prodi.trim(),
+                                        alamat.trim(), telepon.trim(), email.trim(), jenis
+                                    )
+                                )
+                            }
+                        },
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(50)
+                    ) {
+                        Icon(Icons.Default.CheckCircle, <span class="tok-kw">null</span>, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(6.dp))
+                        Text(<span class="tok-str">&quot;Simpan&quot;</span>)
+                    }
+                }
+            }
+        }
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">private</span> <span class="tok-kw">fun</span> InputAnggota(
+    label: String,
+    value: String,
+    onValueChange: (String) -&gt; Unit,
+    placeholder: String,
+    keyboardType: KeyboardType = KeyboardType.Text
+) {
+    Column(modifier = Modifier.padding(bottom = 12.dp)) {
+        Text(label, color = TextDark, fontSize = 13.sp, fontWeight = FontWeight.Medium)
+        Spacer(Modifier.height(5.dp))
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = { Text(placeholder, fontSize = 13.sp, color = TextMuted) },
+            singleLine = <span class="tok-kw">true</span>,
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = BorderBlue,
+                focusedBorderColor = Blue,
+                unfocusedContainerColor = Color.White,
+                focusedContainerColor = Color.White
+            )
+        )
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">private</span> <span class="tok-kw">fun</span> DetailAnggotaDialog(
+    anggota: Anggota,
+    onTutup: () -&gt; Unit,
+    onEdit: () -&gt; Unit
+) {
+    AlertDialog(
+        onDismissRequest = onTutup,
+        containerColor = Color.White,
+        icon = {
+            Box(
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(CircleShape)
+                    .background(Blue),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    anggota.nama.firstOrNull()?.uppercase() ?: <span class="tok-str">&quot;?&quot;</span>,
+                    color = Color.White,
+                    fontSize = 27.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        },
+        title = {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(anggota.nama, color = DarkBlue, fontWeight = FontWeight.Bold)
+                Text(
+                    anggota.jenis,
+                    color = Blue,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(13.dp)) {
+                DetailBaris(Icons.Default.School, <span class="tok-str">&quot;NIM/NRP&quot;</span>, anggota.nim)
+                DetailBaris(Icons.Default.Book, <span class="tok-str">&quot;Program Studi&quot;</span>, anggota.prodi)
+                DetailBaris(Icons.Default.LocationOn, <span class="tok-str">&quot;Alamat&quot;</span>, anggota.alamat)
+                DetailBaris(Icons.Default.Phone, <span class="tok-str">&quot;Nomor Telepon&quot;</span>, anggota.telepon)
+                DetailBaris(Icons.Default.Email, <span class="tok-str">&quot;Email&quot;</span>, anggota.email)
+            }
+        },
+        confirmButton = {
+            Button(onClick = onEdit) {
+                Icon(Icons.Default.Edit, <span class="tok-kw">null</span>, modifier = Modifier.size(17.dp))
+                Spacer(Modifier.width(5.dp))
+                Text(<span class="tok-str">&quot;Edit&quot;</span>)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onTutup) { Text(<span class="tok-str">&quot;Tutup&quot;</span>) }
+        }
+    )
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">private</span> <span class="tok-kw">fun</span> DetailBaris(
+    ikon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String,
+    isi: String
+) {
+    Row(verticalAlignment = Alignment.Top) {
+        Icon(ikon, contentDescription = <span class="tok-kw">null</span>, tint = Blue, modifier = Modifier.size(20.dp))
+        Spacer(Modifier.width(10.dp))
+        Column {
+            Text(label, fontSize = 11.sp, color = TextMuted)
+            Text(isi, fontSize = 14.sp, color = TextDark)
+        }
+    }
+}
+
+<span class="tok-an">@Preview</span>(
+    showBackground = <span class="tok-kw">true</span>,
+    showSystemUi = <span class="tok-kw">true</span>,
+    name = <span class="tok-str">&quot;LibraryReg Dashboard&quot;</span>,
+    widthDp = 393,
+    heightDp = 852
+)
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> LibraryRegPreview() {
+    <span class="tok-kw">val</span> context = androidx.compose.ui.platform.LocalContext.current
+
+    MaterialTheme(
+        colorScheme = lightColorScheme(
+            primary = Blue,
+            secondary = DarkBlue,
+            background = PaleBlue,
+            surface = Color.White
+        )
+    ) {
+        LibraryRegApp(
+            context = context,
+            dataAwal = listOf(
+                Anggota(
+                    <span class="tok-str">&quot;Andi Pratama&quot;</span>, <span class="tok-str">&quot;2301001&quot;</span>, <span class="tok-str">&quot;Informatika&quot;</span>,
+                    <span class="tok-str">&quot;Surabaya&quot;</span>, <span class="tok-str">&quot;081234567890&quot;</span>,
+                    <span class="tok-str">&quot;andi@gmail.com&quot;</span>, <span class="tok-str">&quot;Mahasiswa&quot;</span>
+                ),
+                Anggota(
+                    <span class="tok-str">&quot;Siti Nurhaliza&quot;</span>, <span class="tok-str">&quot;2301002&quot;</span>, <span class="tok-str">&quot;Sistem Informasi&quot;</span>,
+                    <span class="tok-str">&quot;Sidoarjo&quot;</span>, <span class="tok-str">&quot;081234567891&quot;</span>,
+                    <span class="tok-str">&quot;siti@gmail.com&quot;</span>, <span class="tok-str">&quot;Mahasiswa&quot;</span>
+                ),
+                Anggota(
+                    <span class="tok-str">&quot;Budi Santoso&quot;</span>, <span class="tok-str">&quot;1987010120&quot;</span>, <span class="tok-str">&quot;Informatika&quot;</span>,
+                    <span class="tok-str">&quot;Malang&quot;</span>, <span class="tok-str">&quot;081234567892&quot;</span>,
+                    <span class="tok-str">&quot;budi@gmail.com&quot;</span>, <span class="tok-str">&quot;Dosen&quot;</span>
+                )
+            )
+        )
+    }
+}
+
+<span class="tok-an">@Preview</span>(
+    showBackground = <span class="tok-kw">true</span>,
+    name = <span class="tok-str">&quot;Preview Form Anggota&quot;</span>,
+    widthDp = 393
+)
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> FormAnggotaDialogPreview() {
+    MaterialTheme {
+        FormAnggotaDialog(
+            anggotaAwal = <span class="tok-kw">null</span>,
+            daftar = emptyList(),
+            onTutup = {},
+            onSimpan = {}
+        )
+    }
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="block reveal" id="ets-preview">
+      <h2>Preview</h2>
+      <div class="preview-frame">
+        <img src="ets-preview1.png" alt="Preview aplikasi LibraryReg menampilkan sebelum ada anggota">
+      </div>
+      <p class="preview-caption">LibraryRegPreview: pratinjau dashboard LibraryReg di Android Studio</p>
+      <div class="preview-frame">
+        <img src="ets-preview2.png" alt="Preview aplikasi LibraryReg menampilkan form penambahan anggota">
+      </div>
+      <p class="preview-caption">LibraryRegPreview: pratinjau form penambahan anggota LibraryReg di Android Studio</p>
+      <div class="preview-frame">
+        <img src="ets-preview3.png" alt="Preview aplikasi LibraryReg menampilkan tampilan search">
+      </div>
+      <p class="preview-caption">LibraryRegPreview: pratinjau searchbar LibraryReg di Android Studio</p>
+      <div class="preview-frame">
+        <img src="ets-preview4.png" alt="Preview aplikasi LibraryReg menampilkan informasi dari anggota perpustakaan">
+      </div>
+      <p class="preview-caption">LibraryRegPreview: pratinjau informasi anggota LibraryReg di Android Studio</p>
+      <div class="preview-frame">
+        <img src="ets-preview5.png" alt="Preview aplikasi LibraryReg menampilkan form edit informasi anggota">
+      </div>
+      <p class="preview-caption">LibraryRegPreview: pratinjau form edit informasi anggota LibraryReg di Android Studio</p>
+      <div class="preview-frame">
+        <img src="ets-preview6.png" alt="Preview aplikasi LibraryReg menampilkan validasi untuk hapus anggota">
+      </div>
+      <p class="preview-caption">LibraryRegPreview: pratinjau validasi hapus anggota LibraryReg di Android Studio</p>
     </section>
   </div>
 
