@@ -38,6 +38,8 @@
     <a href="#kuis-1" data-tab="kuis-1">Kuis 1</a>
     <a href="#tugas-8" data-tab="tugas-8">Tugas 8</a>
     <a href="#ets" data-tab="ets">ETS</a>
+    <a href="#tugas-9" data-tab="tugas-9">Tugas 9</a>
+    <a href="#tugas-10" data-tab="tugas-10">Tugas 10</a>
   </div>
 </div>
 
@@ -2864,46 +2866,570 @@
     <section class="block reveal" id="ets-preview">
       <h2>Preview</h2>
       <div class="preview-frame">
-        <img src="ets-preview1.png" alt="Preview aplikasi LibraryReg menampilkan sebelum ada anggota">
+        <img src="ets-preview.png" alt="Preview aplikasi LibraryReg menampilkan daftar anggota perpustakaan di Android Studio">
       </div>
       <p class="preview-caption">LibraryRegPreview: pratinjau dashboard LibraryReg di Android Studio</p>
-      <div class="preview-frame">
-        <img src="ets-preview2.png" alt="Preview aplikasi LibraryReg menampilkan form penambahan anggota">
-      </div>
-      <p class="preview-caption">LibraryRegPreview: pratinjau form penambahan anggota LibraryReg di Android Studio</p>
-      <div class="preview-frame">
-        <img src="ets-preview3.png" alt="Preview aplikasi LibraryReg menampilkan tampilan search">
-      </div>
-      <p class="preview-caption">LibraryRegPreview: pratinjau searchbar LibraryReg di Android Studio</p>
-      <div class="preview-frame">
-        <img src="ets-preview4.png" alt="Preview aplikasi LibraryReg menampilkan informasi dari anggota perpustakaan">
-      </div>
-      <p class="preview-caption">LibraryRegPreview: pratinjau informasi anggota LibraryReg di Android Studio</p>
-      <div class="preview-frame">
-        <img src="ets-preview5.png" alt="Preview aplikasi LibraryReg menampilkan form edit informasi anggota">
-      </div>
-      <p class="preview-caption">LibraryRegPreview: pratinjau form edit informasi anggota LibraryReg di Android Studio</p>
-      <div class="preview-frame">
-        <img src="ets-preview6.png" alt="Preview aplikasi LibraryReg menampilkan validasi untuk hapus anggota">
-      </div>
-      <p class="preview-caption">LibraryRegPreview: pratinjau validasi hapus anggota LibraryReg di Android Studio</p>
     </section>
-    <section id="demo">
-    <h2>Demo Aplikasi</h2>
+  </div>
 
-    <div class="video-container">
-        <iframe
-    src="https://www.youtube.com/embed/VIDEO_ID"
-    title="Demo Aplikasi"
-    width="560"
-    height="315"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen>
-</iframe>
+
+  <div id="tugas-9">
+    <div class="task-divider reveal">
+      <span class="task-num">Tugas 9</span>
+      <h2 class="task-h">Kalkulator: Jetpack Compose</h2>
     </div>
-    <a href="https://youtu.be/CLH9VAOLNWI" target="_blank" rel="noopener">Link Demo</a>
-</section>
+
+    <section class="block reveal" id="tugas9-ringkasan">
+      <h2>Ringkasan</h2>
+      <p class="summary-text">Aplikasi kalkulator sederhana dengan dua kolom input angka dan satu kolom hasil yang bersifat <i>read-only</i>. Empat tombol operasi (tambah, kurang, kali, bagi) memanggil fungsi <code>hitung()</code> yang memvalidasi input, menghitung hasilnya, dan menampilkan pesan error jika input tidak valid atau pembagian dengan nol. Tombol Clear mengosongkan seluruh kolom.</p>
+    </section>
+
+    <section class="block reveal" id="tugas9-komponen">
+      <h2>Komponen yang digunakan</h2>
+      <div class="component-grid">
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>OutlinedTextField</strong><span>Dua kolom input angka dan satu kolom hasil yang bersifat read-only.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Button</strong><span>Empat tombol operasi aritmatika (+, -, x, ÷) dan satu tombol Clear, masing-masing dengan warna berbeda.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Column &amp; Row</strong><span>Menyusun kolom input secara vertikal dan tombol operasi secara horizontal berjajar.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>State (remember)</strong><span>Menyimpan nilai kedua input dan hasil perhitungan supaya UI ikut berubah tiap tombol ditekan.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas9-kode">
+      <h2>Kode: MainActivity.kt</h2>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.kalkulator
+
+<span class="tok-kw">import</span> android.os.Bundle
+<span class="tok-kw">import</span> androidx.activity.ComponentActivity
+<span class="tok-kw">import</span> androidx.activity.compose.setContent
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.*
+<span class="tok-kw">import</span> androidx.compose.foundation.text.KeyboardOptions
+<span class="tok-kw">import</span> androidx.compose.material3.*
+<span class="tok-kw">import</span> androidx.compose.runtime.*
+<span class="tok-kw">import</span> androidx.compose.ui.Alignment
+<span class="tok-kw">import</span> androidx.compose.ui.Modifier
+<span class="tok-kw">import</span> androidx.compose.ui.graphics.Color
+<span class="tok-kw">import</span> androidx.compose.ui.text.font.FontWeight
+<span class="tok-kw">import</span> androidx.compose.ui.text.input.KeyboardType
+<span class="tok-kw">import</span> androidx.compose.ui.text.style.TextAlign
+<span class="tok-kw">import</span> androidx.compose.ui.tooling.preview.Preview
+<span class="tok-kw">import</span> androidx.compose.ui.unit.dp
+<span class="tok-kw">import</span> androidx.compose.ui.unit.sp
+
+<span class="tok-kw">class</span> MainActivity : ComponentActivity() {
+    <span class="tok-kw">override</span> <span class="tok-kw">fun</span> onCreate(savedInstanceState: Bundle?) {
+        <span class="tok-kw">super</span>.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    KalkulatorApp()
+                }
+            }
+        }
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> KalkulatorApp() {
+    <span class="tok-kw">var</span> inputAngka1 <span class="tok-kw">by</span> remember { mutableStateOf(<span class="tok-str">&quot;&quot;</span>) }
+    <span class="tok-kw">var</span> inputAngka2 <span class="tok-kw">by</span> remember { mutableStateOf(<span class="tok-str">&quot;&quot;</span>) }
+    <span class="tok-kw">var</span> hasilPerhitungan <span class="tok-kw">by</span> remember { mutableStateOf(<span class="tok-str">&quot;&quot;</span>) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Text(
+            text = <span class="tok-str">&quot;Kalkulator\nJetpack Compose&quot;</span>,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        OutlinedTextField(
+            value = inputAngka1,
+            onValueChange = { inputAngka1 = it },
+            label = { Text(<span class="tok-str">&quot;Input Angka 1&quot;</span>) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        OutlinedTextField(
+            value = inputAngka2,
+            onValueChange = { inputAngka2 = it },
+            label = { Text(<span class="tok-str">&quot;Input Angka 2&quot;</span>) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        OutlinedTextField(
+            value = hasilPerhitungan,
+            onValueChange = {},
+            label = { Text(<span class="tok-str">&quot;Tampilan Hasil&quot;</span>) },
+            readOnly = <span class="tok-kw">true</span>,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Button(
+                onClick = { hitung(inputAngka1, inputAngka2, <span class="tok-str">&quot;+&quot;</span>) { hasilPerhitungan = it } },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE57373))
+            ) { Text(<span class="tok-str">&quot;+&quot;</span>) }
+
+            Button(
+                onClick = { hitung(inputAngka1, inputAngka2, <span class="tok-str">&quot;-&quot;</span>) { hasilPerhitungan = it } },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF81C784))
+            ) { Text(<span class="tok-str">&quot;-&quot;</span>) }
+
+            Button(
+                onClick = { hitung(inputAngka1, inputAngka2, <span class="tok-str">&quot;*&quot;</span>) { hasilPerhitungan = it } },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF64B5F6))
+            ) { Text(<span class="tok-str">&quot;x&quot;</span>) }
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Button(
+                onClick = { hitung(inputAngka1, inputAngka2, <span class="tok-str">&quot;/&quot;</span>) { hasilPerhitungan = it } },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFBA68C8))
+            ) { Text(<span class="tok-str">&quot;÷&quot;</span>) }
+
+            Button(
+                onClick = {
+                    inputAngka1 = <span class="tok-str">&quot;&quot;</span>
+                    inputAngka2 = <span class="tok-str">&quot;&quot;</span>
+                    hasilPerhitungan = <span class="tok-str">&quot;&quot;</span>
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFB74D))
+            ) { Text(<span class="tok-str">&quot;Clear 🗑&quot;</span>) }
+        }
+    }
+}
+
+<span class="tok-kw">fun</span> hitung(angka1: String, angka2: String, <span class="tok-kw">operator</span>: String, onResult: (String) -&gt; Unit) {
+    <span class="tok-kw">val</span> n1 = angka1.toDoubleOrNull()
+    <span class="tok-kw">val</span> n2 = angka2.toDoubleOrNull()
+
+    <span class="tok-kw">if</span> (n1 == <span class="tok-kw">null</span> || n2 == <span class="tok-kw">null</span>) {
+        onResult(<span class="tok-str">&quot;Input tidak valid&quot;</span>)
+        <span class="tok-kw">return</span>
+    }
+
+    <span class="tok-kw">val</span> hasil = <span class="tok-kw">when</span> (<span class="tok-kw">operator</span>) {
+        <span class="tok-str">&quot;+&quot;</span> -&gt; n1 + n2
+        <span class="tok-str">&quot;-&quot;</span> -&gt; n1 - n2
+        <span class="tok-str">&quot;*&quot;</span> -&gt; n1 * n2
+        <span class="tok-str">&quot;/&quot;</span> -&gt; <span class="tok-kw">if</span> (n2 != 0.0) n1 / n2 <span class="tok-kw">else</span> Double.NaN
+        <span class="tok-kw">else</span> -&gt; 0.0
+    }
+
+    <span class="tok-kw">if</span> (hasil.isNaN()) {
+        onResult(<span class="tok-str">&quot;Error: Bagi dgn 0&quot;</span>)
+    } <span class="tok-kw">else</span> {
+        <span class="tok-kw">val</span> hasilFormat = <span class="tok-kw">if</span> (hasil % 1.0 == 0.0) hasil.toInt().toString() <span class="tok-kw">else</span> hasil.toString()
+        onResult(hasilFormat)
+    }
+}
+
+<span class="tok-cm">// Blok kode untuk menampilkan Preview di Android Studio</span>
+<span class="tok-an">@Preview</span>(showBackground = <span class="tok-kw">true</span>, showSystemUi = <span class="tok-kw">true</span>)
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> KalkulatorAppPreview() {
+    MaterialTheme {
+        KalkulatorApp()
+    }
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas9-preview">
+      <h2>Preview</h2>
+      <div class="preview-frame">
+        <img src="tugas9-preview.png" alt="Preview aplikasi Kalkulator menampilkan kolom input dan tombol operasi di Android Studio">
+      </div>
+      <p class="preview-caption">KalkulatorAppPreview: pratinjau composable KalkulatorApp di Android Studio</p>
+    </section>
+  </div>
+
+
+  <div id="tugas-10">
+    <div class="task-divider reveal">
+      <span class="task-num">Tugas 10</span>
+      <h2 class="task-h">Login MVVM + Room Database</h2>
+    </div>
+
+    <section class="block reveal" id="tugas10-ringkasan">
+      <h2>Ringkasan</h2>
+      <p class="summary-text">Aplikasi login sederhana yang dibangun dengan pola arsitektur MVVM (Model-View-ViewModel). Fitur yang tersedia: input username, input password, tombol login, validasi login (kolom wajib diisi, serta pencocokan ke data yang tersimpan), pesan sukses/gagal, dan data user disimpan secara permanen di Room Database. Saat aplikasi pertama kali dijalankan, satu akun contoh (<code>admin</code> / <code>admin123</code>) otomatis ditambahkan ke database supaya login bisa langsung dicoba.</p>
+    </section>
+
+    <section class="block reveal" id="tugas10-arsitektur">
+      <h2>Arsitektur MVVM</h2>
+      <div class="component-grid">
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Model</strong><span><code>User</code> (Entity), <code>UserDao</code>, dan <code>AppDatabase</code>: mendefinisikan struktur data dan cara mengaksesnya di Room.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Repository</strong><span><code>UserRepository</code>: jembatan antara ViewModel dan Room, menyembunyikan detail query dari lapisan di atasnya.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>ViewModel</strong><span><code>LoginViewModel</code>: menyimpan state UI (<code>LoginUiState</code>) di <code>StateFlow</code>, memproses validasi, dan memanggil repository lewat <code>viewModelScope</code>.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>View</strong><span><code>LoginScreen</code> composable: hanya menampilkan state dan meneruskan aksi pengguna ke ViewModel, tanpa logika bisnis.</span></div>
+        </div>
+      </div>
+      <p class="summary-text">Alur datanya satu arah: View memanggil fungsi di ViewModel (<code>onUsernameChange</code>, <code>onPasswordChange</code>, <code>login</code>) &rarr; ViewModel memproses dan berbicara ke Repository &rarr; Repository membaca/menulis ke Room lewat DAO &rarr; hasilnya dikembalikan ke ViewModel dan disimpan di <code>StateFlow</code> &rarr; View otomatis re-render karena mengamati state tersebut lewat <code>collectAsState()</code>.</p>
+    </section>
+
+    <section class="block reveal" id="tugas10-komponen">
+      <h2>Komponen &amp; dependency yang digunakan</h2>
+      <div class="component-grid">
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Room (runtime, ktx, compiler/KSP)</strong><span>Menyimpan data user secara lokal dan persisten di SQLite lewat Entity, DAO, dan Database.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>ViewModel + StateFlow</strong><span>Menyimpan dan mengamati state UI yang bertahan terhadap perubahan konfigurasi (misalnya rotasi layar).</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>Coroutine (viewModelScope)</strong><span>Menjalankan operasi Room secara asynchronous supaya tidak memblokir UI thread.</span></div>
+        </div>
+        <div class="component-chip">
+          <span class="dot"></span>
+          <div><strong>OutlinedTextField &amp; PasswordVisualTransformation</strong><span>Input username dan password, dengan karakter password disamarkan.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas10-kode">
+      <h2>Kode</h2>
+      <h3>build.gradle.kts (dependency Room &amp; ViewModel Compose)</h3>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code>plugins {
+    id(<span class="tok-str">&quot;com.android.application&quot;</span>)
+    id(<span class="tok-str">&quot;org.jetbrains.kotlin.android&quot;</span>)
+    id(<span class="tok-str">&quot;com.google.devtools.ksp&quot;</span>)
+}
+
+dependencies {
+    implementation(<span class="tok-str">&quot;androidx.room:room-runtime:2.6.1&quot;</span>)
+    implementation(<span class="tok-str">&quot;androidx.room:room-ktx:2.6.1&quot;</span>)
+    ksp(<span class="tok-str">&quot;androidx.room:room-compiler:2.6.1&quot;</span>)
+
+    implementation(<span class="tok-str">&quot;androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4&quot;</span>)
+    implementation(<span class="tok-str">&quot;androidx.lifecycle:lifecycle-runtime-ktx:2.8.4&quot;</span>)
+}</code></pre>
+      </div>
+      <h3>data/User.kt (Entity)</h3>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.loginmvvm.<span class="tok-kw">data</span>
+
+<span class="tok-kw">import</span> androidx.room.Entity
+<span class="tok-kw">import</span> androidx.room.PrimaryKey
+
+<span class="tok-an">@Entity</span>(tableName = <span class="tok-str">&quot;users&quot;</span>)
+<span class="tok-kw">data</span> <span class="tok-kw">class</span> User(
+    <span class="tok-an">@PrimaryKey</span>(autoGenerate = <span class="tok-kw">true</span>)
+    <span class="tok-kw">val</span> id: Int = 0,
+    <span class="tok-kw">val</span> username: String,
+    <span class="tok-kw">val</span> password: String
+)</code></pre>
+      </div>
+      <h3>data/UserDao.kt (DAO)</h3>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.loginmvvm.<span class="tok-kw">data</span>
+
+<span class="tok-kw">import</span> androidx.room.Dao
+<span class="tok-kw">import</span> androidx.room.Insert
+<span class="tok-kw">import</span> androidx.room.OnConflictStrategy
+<span class="tok-kw">import</span> androidx.room.Query
+
+<span class="tok-an">@Dao</span>
+<span class="tok-kw">interface</span> UserDao {
+
+    <span class="tok-an">@Insert</span>(onConflict = OnConflictStrategy.IGNORE)
+    <span class="tok-kw">suspend</span> <span class="tok-kw">fun</span> insertUser(user: User)
+
+    <span class="tok-an">@Query</span>(<span class="tok-str">&quot;SELECT * FROM users WHERE username = :username AND password = :password LIMIT 1&quot;</span>)
+    <span class="tok-kw">suspend</span> <span class="tok-kw">fun</span> login(username: String, password: String): User?
+
+    <span class="tok-an">@Query</span>(<span class="tok-str">&quot;SELECT COUNT(*) FROM users&quot;</span>)
+    <span class="tok-kw">suspend</span> <span class="tok-kw">fun</span> countUsers(): Int
+}</code></pre>
+      </div>
+      <h3>data/AppDatabase.kt (Database)</h3>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.loginmvvm.<span class="tok-kw">data</span>
+
+<span class="tok-kw">import</span> android.content.Context
+<span class="tok-kw">import</span> androidx.room.Database
+<span class="tok-kw">import</span> androidx.room.Room
+<span class="tok-kw">import</span> androidx.room.RoomDatabase
+
+<span class="tok-an">@Database</span>(entities = [User::<span class="tok-kw">class</span>], version = 1, exportSchema = <span class="tok-kw">false</span>)
+<span class="tok-kw">abstract</span> <span class="tok-kw">class</span> AppDatabase : RoomDatabase() {
+
+    <span class="tok-kw">abstract</span> <span class="tok-kw">fun</span> userDao(): UserDao
+
+    <span class="tok-kw">companion</span> <span class="tok-kw">object</span> {
+        <span class="tok-an">@Volatile</span>
+        <span class="tok-kw">private</span> <span class="tok-kw">var</span> INSTANCE: AppDatabase? = <span class="tok-kw">null</span>
+
+        <span class="tok-kw">fun</span> getInstance(context: Context): AppDatabase {
+            <span class="tok-kw">return</span> INSTANCE ?: synchronized(<span class="tok-kw">this</span>) {
+                <span class="tok-kw">val</span> instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::<span class="tok-kw">class</span>.java,
+                    <span class="tok-str">&quot;login_database&quot;</span>
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+}</code></pre>
+      </div>
+      <h3>repository/UserRepository.kt (Repository)</h3>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.loginmvvm.repository
+
+<span class="tok-kw">import</span> com.example.loginmvvm.<span class="tok-kw">data</span>.User
+<span class="tok-kw">import</span> com.example.loginmvvm.<span class="tok-kw">data</span>.UserDao
+
+<span class="tok-kw">class</span> UserRepository(<span class="tok-kw">private</span> <span class="tok-kw">val</span> userDao: UserDao) {
+
+    <span class="tok-kw">suspend</span> <span class="tok-kw">fun</span> login(username: String, password: String): User? {
+        <span class="tok-kw">return</span> userDao.login(username, password)
+    }
+
+    <span class="tok-kw">suspend</span> <span class="tok-kw">fun</span> seedDemoUser() {
+        <span class="tok-kw">if</span> (userDao.countUsers() == 0) {
+            userDao.insertUser(User(username = <span class="tok-str">&quot;admin&quot;</span>, password = <span class="tok-str">&quot;admin123&quot;</span>))
+        }
+    }
+}</code></pre>
+      </div>
+      <h3>ui/LoginViewModel.kt (ViewModel)</h3>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.loginmvvm.ui
+
+<span class="tok-kw">import</span> android.app.Application
+<span class="tok-kw">import</span> androidx.lifecycle.AndroidViewModel
+<span class="tok-kw">import</span> androidx.lifecycle.viewModelScope
+<span class="tok-kw">import</span> com.example.loginmvvm.<span class="tok-kw">data</span>.AppDatabase
+<span class="tok-kw">import</span> com.example.loginmvvm.repository.UserRepository
+<span class="tok-kw">import</span> kotlinx.coroutines.flow.MutableStateFlow
+<span class="tok-kw">import</span> kotlinx.coroutines.flow.StateFlow
+<span class="tok-kw">import</span> kotlinx.coroutines.flow.asStateFlow
+<span class="tok-kw">import</span> kotlinx.coroutines.launch
+
+<span class="tok-kw">data</span> <span class="tok-kw">class</span> LoginUiState(
+    <span class="tok-kw">val</span> username: String = <span class="tok-str">&quot;&quot;</span>,
+    <span class="tok-kw">val</span> password: String = <span class="tok-str">&quot;&quot;</span>,
+    <span class="tok-kw">val</span> pesan: String = <span class="tok-str">&quot;&quot;</span>,
+    <span class="tok-kw">val</span> isSukses: Boolean = <span class="tok-kw">false</span>
+)
+
+<span class="tok-kw">class</span> LoginViewModel(application: Application) : AndroidViewModel(application) {
+
+    <span class="tok-kw">private</span> <span class="tok-kw">val</span> repository: UserRepository
+
+    <span class="tok-kw">private</span> <span class="tok-kw">val</span> _uiState = MutableStateFlow(LoginUiState())
+    <span class="tok-kw">val</span> uiState: StateFlow&lt;LoginUiState&gt; = _uiState.asStateFlow()
+
+    <span class="tok-kw">init</span> {
+        <span class="tok-kw">val</span> dao = AppDatabase.getInstance(application).userDao()
+        repository = UserRepository(dao)
+        viewModelScope.launch {
+            repository.seedDemoUser()
+        }
+    }
+
+    <span class="tok-kw">fun</span> onUsernameChange(value: String) {
+        _uiState.value = _uiState.value.copy(username = value, pesan = <span class="tok-str">&quot;&quot;</span>)
+    }
+
+    <span class="tok-kw">fun</span> onPasswordChange(value: String) {
+        _uiState.value = _uiState.value.copy(password = value, pesan = <span class="tok-str">&quot;&quot;</span>)
+    }
+
+    <span class="tok-kw">fun</span> login() {
+        <span class="tok-kw">val</span> username = _uiState.value.username.trim()
+        <span class="tok-kw">val</span> password = _uiState.value.password
+
+        <span class="tok-kw">if</span> (username.isBlank() || password.isBlank()) {
+            _uiState.value = _uiState.value.copy(
+                pesan = <span class="tok-str">&quot;Username dan password wajib diisi&quot;</span>,
+                isSukses = <span class="tok-kw">false</span>
+            )
+            <span class="tok-kw">return</span>
+        }
+
+        viewModelScope.launch {
+            <span class="tok-kw">val</span> user = repository.login(username, password)
+            <span class="tok-kw">if</span> (user != <span class="tok-kw">null</span>) {
+                _uiState.value = _uiState.value.copy(
+                    pesan = <span class="tok-str">&quot;Login berhasil, selamat datang ${user.username}&quot;</span>,
+                    isSukses = <span class="tok-kw">true</span>
+                )
+            } <span class="tok-kw">else</span> {
+                _uiState.value = _uiState.value.copy(
+                    pesan = <span class="tok-str">&quot;Username atau password salah&quot;</span>,
+                    isSukses = <span class="tok-kw">false</span>
+                )
+            }
+        }
+    }
+}</code></pre>
+      </div>
+      <h3>MainActivity.kt (View)</h3>
+      <div class="code-wrap">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre class="code-block"><code><span class="tok-kw">package</span> com.example.loginmvvm
+
+<span class="tok-kw">import</span> android.os.Bundle
+<span class="tok-kw">import</span> androidx.activity.ComponentActivity
+<span class="tok-kw">import</span> androidx.activity.compose.setContent
+<span class="tok-kw">import</span> androidx.compose.foundation.layout.*
+<span class="tok-kw">import</span> androidx.compose.material3.*
+<span class="tok-kw">import</span> androidx.compose.runtime.*
+<span class="tok-kw">import</span> androidx.compose.ui.Alignment
+<span class="tok-kw">import</span> androidx.compose.ui.Modifier
+<span class="tok-kw">import</span> androidx.compose.ui.graphics.Color
+<span class="tok-kw">import</span> androidx.compose.ui.text.font.FontWeight
+<span class="tok-kw">import</span> androidx.compose.ui.text.input.PasswordVisualTransformation
+<span class="tok-kw">import</span> androidx.compose.ui.unit.dp
+<span class="tok-kw">import</span> androidx.compose.ui.unit.sp
+<span class="tok-kw">import</span> androidx.lifecycle.viewmodel.compose.viewModel
+<span class="tok-kw">import</span> com.example.loginmvvm.ui.LoginViewModel
+
+<span class="tok-kw">class</span> MainActivity : ComponentActivity() {
+    <span class="tok-kw">override</span> <span class="tok-kw">fun</span> onCreate(savedInstanceState: Bundle?) {
+        <span class="tok-kw">super</span>.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    LoginScreen()
+                }
+            }
+        }
+    }
+}
+
+<span class="tok-an">@Composable</span>
+<span class="tok-kw">fun</span> LoginScreen(viewModel: LoginViewModel = viewModel()) {
+    <span class="tok-kw">val</span> uiState <span class="tok-kw">by</span> viewModel.uiState.collectAsState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = <span class="tok-str">&quot;Login&quot;</span>,
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        OutlinedTextField(
+            value = uiState.username,
+            onValueChange = { viewModel.onUsernameChange(it) },
+            label = { Text(<span class="tok-str">&quot;Username&quot;</span>) },
+            singleLine = <span class="tok-kw">true</span>,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        OutlinedTextField(
+            value = uiState.password,
+            onValueChange = { viewModel.onPasswordChange(it) },
+            label = { Text(<span class="tok-str">&quot;Password&quot;</span>) },
+            singleLine = <span class="tok-kw">true</span>,
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Button(
+            onClick = { viewModel.login() },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(<span class="tok-str">&quot;Login&quot;</span>)
+        }
+
+        <span class="tok-kw">if</span> (uiState.pesan.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = uiState.pesan,
+                color = <span class="tok-kw">if</span> (uiState.isSukses) Color(0xFF2E7D32) <span class="tok-kw">else</span> Color(0xFFC62828)
+            )
+        }
+    }
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="block reveal" id="tugas10-catatan">
+      <h2>Catatan pengujian</h2>
+      <p class="summary-text">Karena belum ada fitur registrasi, akun contoh <code>admin</code> / <code>admin123</code> otomatis dibuat lewat <code>seedDemoUser()</code> saat database pertama kali kosong, jadi login bisa langsung diuji coba tanpa perlu mengisi data secara manual. Password di sini disimpan apa adanya (plain text) karena fokus tugas ada di arsitektur MVVM dan Room, bukan keamanan; untuk aplikasi produksi password seharusnya di-hash terlebih dahulu sebelum disimpan.</p>
+    </section>
+
+    <section class="block reveal" id="tugas10-preview">
+      <h2>Preview</h2>
+      <div class="preview-frame">
+        <img src="tugas10-preview.png" alt="Preview aplikasi Login menampilkan form username, password, dan tombol login di Android Studio">
+      </div>
+      <p class="preview-caption">LoginScreen: pratinjau layar login dengan validasi dan Room Database di Android Studio</p>
+    </section>
   </div>
 
   <footer>
